@@ -11,7 +11,7 @@ The work has two connected parts:
 2. A Vapi voice-agent demo that applies the findings to a safer, more deterministic
    Medi-Cal renewal conversation.
 
-## Suggested demo walkthrough
+## Demo walkthrough
 
 1. Start with the architecture and testing methodology below.
 2. Open the [QA error log](./artifacts/error-log.html) and review a few recordings.
