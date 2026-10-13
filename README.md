@@ -1,228 +1,213 @@
-# Wedge Voice Agent QA Harness
+# Wedge Voice Agent QA Demo
 
-This repository contains the first runnable slice of the QA system described in
-[`IMPLEMENTATION_SPEC.md`](./IMPLEMENTATION_SPEC.md): a scenario queue in Supabase and a
-LiveKit worker that answers calls as a synthetic member.
+This demo shows how I tested a healthcare renewal voice agent, turned call failures into
+reproducible evidence, and built a more reliable inbound voice experience around the
+highest-risk cases I found.
 
-The proposed secure inbound caller-number identification design is documented in
-[`docs/proposals/caller-number-identification.md`](./docs/proposals/caller-number-identification.md).
-The recommended real-phone implementation is the conversational Vapi demo in
-[`docs/vapi-demo.md`](./docs/vapi-demo.md). The earlier deterministic Twilio proof is
-retained in [`docs/twilio-demo.md`](./docs/twilio-demo.md).
+The work has two connected parts:
 
-## Demo review
+1. A QA harness that runs realistic member scenarios and produces an evidence-backed
+   error log.
+2. A Vapi voice-agent demo that applies the findings to a safer, more deterministic
+   Medi-Cal renewal conversation.
 
-- [Open the QA error log](./artifacts/error-log.html) — consolidated findings with
-  severity, expected behavior, reproduction steps, recording links, and timestamps.
-- The page currently contains 14 findings across 17 recorded occurrences. Download the
-  HTML file from GitHub and open it locally if GitHub shows the source instead of the
-  rendered page.
+## Suggested demo walkthrough
 
-## How the call path works
+1. Start with the architecture and testing methodology below.
+2. Open the [QA error log](./artifacts/error-log.html) and review a few recordings.
+3. Return here for the Vapi voice-agent demo and the improvements it demonstrates.
+
+> GitHub may display the HTML source instead of rendering the error log. Download the
+> file and open it locally to use its search and filters.
+
+## Architecture
+
+### 1. Voice-agent testing and evidence collection
 
 ```text
-Wedge test portal -> Wedge outbound agent -> dedicated QA phone number
-                                              |
-                                              v
-                                      LiveKit inbound trunk
-                                              |
-                                              v
-                                  qa-simulated-caller worker
-                                              |
-                                              v
-                                      Supabase run records
+Versioned scenarios
+       |
+       v
+Supabase test queue <-------------------------------+
+       |                                            |
+       v                                            |
+LiveKit synthetic caller                            |
+       |                                            |
+       v                                            |
+Wedge outbound voice agent <--- Wedge test portal --+
+       |
+       v
+Recording + timestamped transcript + tool events
+       |
+       +-----------------------+
+       |                       |
+       v                       v
+LLM invariant grader    Deterministic policy checks
+       |                       |
+       +-----------+-----------+
+                   |
+                   v
+       Deduplicated QA error log
 ```
 
-The Wedge agent still originates the call. The QA worker owns the receiving number and
-plays the member selected by the queued scenario. It does not call or modify the Wedge
-agent directly.
+The test caller receives a queued persona, calls through the real voice path, and keeps
+each run tied to its scenario. Supabase stores normalized call attempts, transcripts,
+recording references, grader results, findings, and the exact occurrence of each issue.
 
-## What works
+The testing layer does not modify the agent under test. It observes the same call a
+member would experience and preserves enough evidence for a reviewer to reproduce and
+judge the failure.
 
-- Versioned YAML scenarios with local validation.
-- An atomic Supabase queue, so concurrent inbound calls cannot claim the same scenario.
-- Correlation using the dialed LiveKit SIP number and SIP call ID.
-- A current LiveKit Agents 1.8 worker using LiveKit Inference for STT, LLM, and TTS.
-- Run, assignment, attempt, event, grader, finding, and evidence tables.
-- Final LiveKit transcript turns, per-turn timing, close reasons, and STT/LLM/TTS
-  errors are persisted as normalized call events.
-- A separate LiveKit Inference grader scores every scenario invariant, validates cited
-  event IDs, and writes failed checks or scoring failures to the findings log.
-- Batch queueing plus an authenticated portal runner with bounded concurrent waves.
-- Safe failure behavior when no test is queued: the caller acts like a wrong number and
-  does not reveal test instructions.
+### 2. Vapi improvement demo
 
-The authenticated batch runner can ingest the test portal's transcript, tool actions,
-outcome, end reason, and recording reference when portal automation is authorized and
-the local `WEDGE_PORTAL_*` values are configured. Credentials remain local.
-
-## Prerequisites
-
-- Python 3.10–3.14. This machine already has Python 3.11 at
-  `/opt/homebrew/bin/python3.11`.
-- A LiveKit Cloud project.
-- A dedicated LiveKit phone number or third-party SIP DID.
-- A Supabase project for synthetic QA data.
-
-## Local setup
-
-```bash
-/opt/homebrew/bin/python3.11 -m venv .venv
-.venv/bin/pip install -e .
-cp .env.example .env.local
+```text
+Member calls the demo number
+            |
+            v
+     Vapi voice runtime
+            |
+            v
+Authenticated Flask webhook
+            |
+     +------+------+
+     |             |
+     v             v
+Identity guard   Renewal workflow controller
+     |             |
+     +------+------+
+            |
+            v
+  Fictional member profile + call-scoped state
 ```
 
-Apply [`migrations/001_initial.sql`](./migrations/001_initial.sql) in the Supabase SQL
-editor, then fill in `.env.local`. The service-role key is only used by this server-side
-worker and CLI; never expose it to a frontend.
+Vapi handles the live audio conversation. The local webhook controls identity state,
+the next unanswered renewal question, profile updates, and callback consent. Important
+decisions therefore do not depend on the language model remembering the conversation
+correctly.
 
-Validate the included scenarios:
+## How I tested the agent
 
-```bash
-.venv/bin/voice-qa validate
-.venv/bin/voice-qa list
-```
+### Scenario-driven calls
 
-Seed all validated scenarios into Supabase (safe to rerun):
+The scenario catalog covers the normal renewal path and adversarial branches such as:
 
-```bash
-.venv/bin/voice-qa seed
-```
+- Callback requests, refusals, revocation, conditional consent, and being busy.
+- Wrong numbers, family members, guardians, and other unverified callers.
+- English/Spanish switching and explicit language corrections.
+- Already-completed renewals, changed clinics, contact updates, and missing packets.
+- Background noise, mishearing, interruptions, voicemail, and hearing difficulty.
 
-## LiveKit telephony setup
+Each scenario defines the fictional member, caller behavior, safety policy, and
+invariants the agent must satisfy.
 
-In LiveKit Cloud:
+### Evidence-backed grading
 
-1. Purchase a test phone number, or connect a third-party provider through an inbound
-   SIP trunk.
-2. Create an inbound dispatch rule for that trunk.
-3. Dispatch calls to an agent session named `qa-simulated-caller`.
-4. Put the DID in `QA_CALLED_NUMBER` using E.164 format.
+Every completed call can preserve:
 
-LiveKit creates a SIP participant for each incoming call. The worker reads that
-participant's `sip.trunkPhoneNumber` and `sip.callID` attributes, claims the oldest
-matching queued scenario, and starts the synthetic member.
+- The recording and exact error timestamp.
+- The timestamped transcript and agent tool activity.
+- What happened and what should have happened.
+- Severity and issue category.
+- Reproduction steps and repeated occurrences.
 
-## Run one end-to-end test
+An LLM grader evaluates scenario-specific behavior, while deterministic checks enforce
+rules that should not be left to grader interpretation—especially privacy, callback
+consent, language preference, repeated workflow questions, and already-completed
+renewals.
 
-Start the worker:
+### Credit-free regression testing
 
-```bash
-.venv/bin/voice-qa-worker dev
-```
+Completed calls are exported as redacted transcript fixtures so policy logic can be
+replayed without spending additional telephony or agent credits. Mutation tests inject
+known violations and verify that the detection layer catches them.
 
-In a second terminal, queue a case:
+The current repository test suite includes:
 
-```bash
-.venv/bin/voice-qa queue identity_wrong_party_001
-```
+- **103 automated tests** across identity, workflow, grading, persistence, and provider
+  adapters.
+- **360 workflow combinations** covering core renewal branch permutations.
+- **30/30 detected policy mutations** in the offline scenario report.
 
-Then open the Wedge test portal, select the matching fictional member, enter the
-dedicated QA phone number in **Call me on**, and start the call. Run cases sequentially
-until a stronger correlation key is available from the originating system.
+Audio-specific behavior such as latency, interruption timing, STT accuracy, and voice
+quality still requires a live call.
 
-Inspect recent queue activity with:
+## Results
 
-```bash
-.venv/bin/voice-qa queue-status
-```
+The current [QA error log](./artifacts/error-log.html) contains **14 findings across 17
+recorded occurrences**. It is deliberately organized for review rather than as raw
+Supabase tables.
 
-Inspect scored attempts:
+Representative findings include:
 
-```bash
-.venv/bin/voice-qa results
-.venv/bin/voice-qa score <attempt-id>
-```
+- Callback proposed without explicit consent.
+- An unverified caller treated as authorized.
+- Incorrect handling when a family member answers.
+- The renewal script resumed after the member said renewal was complete.
+- A text-only preference converted into a phone callback.
+- Noisy speech accepted without an appropriate clarification.
 
-Build a single local review page containing every grader finding, its occurrences,
-call metadata, cited evidence, grader verdict, and transcript:
+Each entry contains only the review fields needed to make a decision: ID/title,
+category, severity, recording and timestamp, actual behavior, expected behavior, and
+reproduction steps.
 
-```bash
-.venv/bin/voice-qa error-log
-```
+## Vapi voice-agent demo
 
-Open `artifacts/error-log.html` and use the search, severity, status, and category
-filters. The page is generated server-side; Supabase service credentials are never
-embedded in it. Regenerate it after new calls are scored.
+The Vapi demo is the proposed improvement path after reviewing the failures above. It
+uses a fictional member record and guides the caller through a short Medi-Cal renewal
+review instead of relying on a long scripted monologue.
 
-## Batch runs
+### Golden path
 
-Queue the full local catalog without originating calls:
+1. Disclose the AI assistant and recording notice.
+2. Ask whether the caller is the fictional member before sharing member details.
+3. Explain why the Medi-Cal renewal review matters.
+4. Check coverage status and current clinic.
+5. Ask once about the renewal packet and whether help is needed.
+6. Collect confirmed clinic, address, phone, or language changes one field at a time.
+7. Offer a callback only when phone help is selected.
+8. Summarize the result and tell the caller they can hang up.
 
-```bash
-.venv/bin/voice-qa batch-queue --agent-version <version>
-```
+### Improvements demonstrated
 
-For authorized portal automation, set `WEDGE_PORTAL_ACCESS_CODE`,
-`WEDGE_PORTAL_TESTER_NAME`, `WEDGE_PORTAL_TESTER_EMAIL`, and
-`WEDGE_PORTAL_PERSONA_ID` in `.env.local`. Verify the login and fictional persona IDs:
+- **Server-directed sequencing:** one unanswered question and one caller response at a
+  time, preventing the model from racing through the script.
+- **Sticky verification state:** once the fictional caller is confirmed, the agent does
+  not ask for verification again.
+- **Wrong-party privacy boundary:** relatives and claimed representatives do not unlock
+  member information.
+- **Receptive refusals:** “no” closes the current branch without persuasion or a
+  reworded second attempt.
+- **Callback consent lock:** a declined or revoked callback cannot be offered again
+  during that call.
+- **Completed-renewal handling:** “already renewed” permanently skips the old packet and
+  renewal-help loop.
+- **Confirmed profile updates:** clinic and contact changes are read back and written
+  only after confirmation.
+- **Conversation recovery:** interruptions, ambiguous audio, language changes, and
+  corrections preserve workflow state.
+- **Safe completion:** the agent tells the caller the review is complete and lets the
+  caller hang up instead of unexpectedly ending the call.
 
-```bash
-.venv/bin/voice-qa portal-personas
-```
+The implementation is in
+[`src/voice_qa/vapi_demo.py`](./src/voice_qa/vapi_demo.py) and
+[`src/voice_qa/renewal_workflow.py`](./src/voice_qa/renewal_workflow.py). The full local
+setup and synthetic-data boundaries are documented in
+[`docs/vapi-demo.md`](./docs/vapi-demo.md).
 
-Run one call at a time with the default settings. Each call is queued immediately before
-it is originated; the runner waits for completion, ingests portal artifacts, and reruns
-scoring before starting the next call:
+## Repository map
 
-```bash
-.venv/bin/voice-qa run-batch --repeat 1 --agent-version <version>
-```
+- [`artifacts/error-log.html`](./artifacts/error-log.html) — navigable findings and
+  recording evidence.
+- [`testcases/`](./testcases/) — versioned personas, edge cases, and safety invariants.
+- [`fixtures/transcripts/`](./fixtures/transcripts/) — redacted offline replay fixtures.
+- [`src/voice_qa/`](./src/voice_qa/) — test harness, graders, persistence, and Vapi demo.
+- [`tests/`](./tests/) — automated regression and workflow-matrix tests.
+- [`IMPLEMENTATION_SPEC.md`](./IMPLEMENTATION_SPEC.md) — deeper production-oriented
+  design and future integration details.
 
-When no synthetic-caller minutes are available, a human tester can answer the approved
-phone while the harness still automates evidence capture. This creates a manual
-Supabase attempt, starts the portal call, waits for it to end, and imports the recording,
-transcript, outcome, and metadata without invoking a LiveKit worker or automated grader:
+## Safety boundary
 
-```bash
-.venv/bin/voice-qa manual-call manual_audio_background_noise_001 \
-  --phone +1XXXXXXXXXX --agent-version <version>
-```
-
-The command prints the persona and caller instructions before starting the call.
-
-To exercise a scenario several times at once, set a bounded concurrency. Concurrent
-waves contain repetitions of one scenario only because the inbound DID does not expose
-a portal correlation token:
-
-```bash
-.venv/bin/voice-qa run-batch --repeat 10 --concurrency 5 --agent-version <version>
-```
-
-## Credit-free regression testing
-
-Completed calls can be replayed locally without starting LiveKit sessions. Exporting
-keeps only redacted transcript turns, scenario metadata, and grader summaries:
-
-```bash
-.venv/bin/voice-qa offline-export --prefix matrix_
-.venv/bin/voice-qa offline-test --prefix matrix_
-```
-
-The offline test applies deterministic consent, privacy, language, accessibility, and
-workflow checks; detects contradictions where an LLM grader passed a deterministic
-violation; and mutation-tests every selected scenario. The full JSON report is written
-to `artifacts/offline-report.json`. This exercises policy and scoring logic but cannot
-replace live audio checks for SIP routing, STT/TTS behavior, interruptions, or latency.
-
-## Important limitations
-
-- Critical/high automated findings remain candidates until a human verifies the cited
-  transcript and recording evidence.
-- A queued scenario is correlated by the dialed DID. With one DID, different scenarios
-  run in separate waves; only repetitions of the same scenario run concurrently.
-- The scenario prompt provides repeatability, not bit-for-bit identical speech. A later
-  phase can add a deterministic scripted caller for exact regression tests.
-- No real member data may be used. The system is for the portal's fictional members and
-  approved tester numbers only.
-
-## Next integration checkpoint
-
-Once the LiveKit number and Supabase project exist, the smallest useful acceptance test
-is:
-
-1. Queue `identity_wrong_party_001`.
-2. Start a portal call to the QA number.
-3. Confirm the worker claims exactly one assignment.
-4. Listen to the simulated family-member conversation.
-5. Confirm the assignment and attempt are marked completed with the SIP call ID.
+This repository is a synthetic demonstration. It must not be used with real patient
+information. Verbal confirmation in the Vapi flow unlocks only the fictional local
+record; a production healthcare implementation requires an approved identity,
+authorization, consent, retention, and audit model.
