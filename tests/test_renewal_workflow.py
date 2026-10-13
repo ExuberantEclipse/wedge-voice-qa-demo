@@ -84,8 +84,37 @@ class RenewalWorkflowTests(unittest.TestCase):
         self.workflow.record_fact("call-1", "pcp_preference", "keep_clinic")
         self.workflow.record_fact("call-1", "packet_received", "yes")
         self.workflow.record_fact("call-1", "help_preference", "phone")
-        self.workflow.record_fact("call-1", "contact_information_changed", "no")
         self.assertEqual(self.workflow.next_step("call-1")["step"], "callback_offer")
+
+    def test_clinic_help_gives_actionable_guidance_before_contact_check(self):
+        self._advance_to_help_choice("clinic")
+        next_step = self.workflow.next_step("call-1")
+        self.assertEqual(next_step["step"], "contact_changes")
+        self.assertIn("Universal Community Health Center", next_step["say"])
+        self.assertIn("enrollment desk", next_step["say"])
+        self.assertIn("renewal packet", next_step["say"])
+
+    def test_self_service_help_gives_resource_before_contact_check(self):
+        self._advance_to_help_choice("self_service")
+        next_step = self.workflow.next_step("call-1")
+        self.assertEqual(next_step["step"], "contact_changes")
+        self.assertIn("BenefitsCal.com", next_step["say"])
+
+    def test_no_help_is_acknowledged_without_another_offer(self):
+        self._advance_to_help_choice("none")
+        next_step = self.workflow.next_step("call-1")
+        self.assertEqual(next_step["step"], "contact_changes")
+        self.assertIn("won't add renewal help", next_step["say"])
+        self.assertIn("ask about it again", next_step["say"])
+
+    def test_uncertain_help_gets_one_explanation_and_requires_a_choice(self):
+        self._advance_to_help_choice("uncertain")
+        clarification = self.workflow.next_step("call-1")
+        self.assertEqual(clarification["step"], "renewal_help_clarification")
+        self.assertIn("Phone help", clarification["say"])
+        self.assertIn("clinic help", clarification["say"])
+        self.workflow.record_fact("call-1", "help_preference", "none")
+        self.assertEqual(self.workflow.next_step("call-1")["step"], "contact_changes")
 
     def test_callback_decline_closes_branch_and_stays_complete(self):
         self._advance_to_callback_offer()
@@ -93,6 +122,8 @@ class RenewalWorkflowTests(unittest.TestCase):
             "call-1", "no_callback", "No thanks, I don't want a callback"
         )
         self.assertEqual(declined["decision"], "recorded")
+        self.assertEqual(self.workflow.next_step("call-1")["step"], "contact_changes")
+        self.workflow.record_fact("call-1", "contact_information_changed", "no")
         self.assertEqual(self.workflow.next_step("call-1")["step"], "complete")
         self.assertEqual(self.workflow.next_step("call-1")["step"], "complete")
 
@@ -112,6 +143,8 @@ class RenewalWorkflowTests(unittest.TestCase):
             channel="phone",
         )
         self.assertEqual(recorded["decision"], "recorded")
+        self.assertEqual(self.workflow.next_step("call-1")["step"], "contact_changes")
+        self.workflow.record_fact("call-1", "contact_information_changed", "no")
         self.assertEqual(self.workflow.next_step("call-1")["step"], "complete")
 
     def test_callback_revocation_after_consent_closes_branch(self):
@@ -123,6 +156,8 @@ class RenewalWorkflowTests(unittest.TestCase):
             "call-1", "callback_revoked", "Actually, don't call me"
         )
         self.assertEqual(revoked["preference"], "callback_revoked")
+        self.assertEqual(self.workflow.next_step("call-1")["step"], "contact_changes")
+        self.workflow.record_fact("call-1", "contact_information_changed", "no")
         self.assertEqual(self.workflow.next_step("call-1")["step"], "complete")
 
     def test_declined_answer_closes_review(self):
@@ -230,12 +265,14 @@ class RenewalWorkflowTests(unittest.TestCase):
             self.workflow.record_fact("call-1", "language", "klingon")
 
     def _advance_to_callback_offer(self):
+        self._advance_to_help_choice("phone")
+        self.assertEqual(self.workflow.next_step("call-1")["step"], "callback_offer")
+
+    def _advance_to_help_choice(self, preference: str):
         self.workflow.record_fact("call-1", "medi_cal_status", "active")
         self.workflow.record_fact("call-1", "pcp_preference", "keep_clinic")
         self.workflow.record_fact("call-1", "packet_received", "yes")
-        self.workflow.record_fact("call-1", "help_preference", "phone")
-        self.workflow.record_fact("call-1", "contact_information_changed", "no")
-        self.assertEqual(self.workflow.next_step("call-1")["step"], "callback_offer")
+        self.workflow.record_fact("call-1", "help_preference", preference)
 
 
 if __name__ == "__main__":

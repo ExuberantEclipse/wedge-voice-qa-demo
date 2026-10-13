@@ -123,7 +123,7 @@ known violations and verify that the detection layer catches them.
 
 The current repository test suite includes:
 
-- **103 automated tests** across identity, workflow, grading, persistence, and provider
+- **107 automated tests** across identity, workflow, grading, persistence, and provider
   adapters.
 - **360 workflow combinations** covering core renewal branch permutations.
 - **30/30 detected policy mutations** in the offline scenario report.

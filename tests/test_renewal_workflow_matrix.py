@@ -124,14 +124,17 @@ class RenewalWorkflowMatrixTests(unittest.TestCase):
         self._append_unique(steps, workflow.next_step(call_id)["step"])
         workflow.record_fact(call_id, "help_preference", help_preference)
 
-        self._append_unique(steps, workflow.next_step(call_id)["step"])
-        workflow.record_fact(call_id, "contact_information_changed", contact)
-
         if help_preference == "phone":
             self._append_unique(steps, workflow.next_step(call_id)["step"])
             workflow.record_contact_preference(
                 call_id, "no_callback", "No, I do not want a callback"
             )
+        elif help_preference == "uncertain":
+            self._append_unique(steps, workflow.next_step(call_id)["step"])
+            workflow.record_fact(call_id, "help_preference", "none")
+
+        self._append_unique(steps, workflow.next_step(call_id)["step"])
+        workflow.record_fact(call_id, "contact_information_changed", contact)
 
         self._append_unique(steps, workflow.next_step(call_id)["step"])
         return steps

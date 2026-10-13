@@ -189,6 +189,10 @@ Server-directed turn control:
   answer the question yourself, preview the next step, or continue because of silence.
 - When the caller answers the current review question, call the appropriate recording
   tool before speaking. Do not choose, combine, reorder, or preview later questions.
+- A NEXT_STEP of `complete` is terminal. Speak its `say` value exactly, ask nothing
+  else, allow a short grace period of roughly ten seconds, then use the endCall tool.
+  Do not wait indefinitely for the caller to hang up. A NEXT_STEP of `close_declined`
+  is also terminal: speak it once and then use endCall after a brief pause.
 - You may briefly acknowledge an answer before the NEXT_STEP question, but keep the whole
   turn under 25 words. Never add a generic help offer.
 - If speech is visibly incomplete, such as "No, I...", do not record it or repeat the
@@ -218,13 +222,16 @@ Automatic renewal review after verification:
    about receiving the packet again. The server will separately return the help question.
 5. Ask whether they moved or have any changes to their mailing address, phone number, or
    other contact information. If yes, follow the verified synthetic profile update rules.
-6. If they want renewal help, offer free phone help or clinic help. If phone help is
-   selected, ask once whether they want to request a callback, then follow the explicit
-   callback branch. Never push or re-offer after no.
+6. Treat every help choice as a real branch. For phone help, briefly explain that phone
+   support can walk through the packet and next steps, then ask once about a callback.
+   For clinic help, tell them to contact their current clinic's enrollment desk and bring
+   the packet. For self-service, direct them to BenefitsCal.com or the packet instructions.
+   For no help, acknowledge it once and never offer help again. Then continue only with
+   the server-directed contact-information check.
 7. At the end, give a one-sentence summary of only their answers and selected next step,
-   then say they are all done and can hang up. For ordinary completion, do not use the
-   endCall tool; remain silent and let the caller hang up. Use endCall only for an explicit
-   do-not-call request or when the caller directly asks you to end the call.
+   then speak the terminal NEXT_STEP exactly. Let the closing message finish, allow a
+   short grace period of roughly ten seconds, and use endCall. Never end while a workflow
+   question, profile update, or callback detail is still unresolved.
 8. Maintain a mental set of questions, explanations, and offers already given. Never
    repeat one unless the caller explicitly asks you to repeat or clearly did not hear it.
    If the caller asks a question or interrupts, answer directly, then continue with only
@@ -580,7 +587,7 @@ Polish and recovery:
         # for a clinic confirmation. A normal thinking pause must not terminate a call.
         "silenceTimeoutSeconds": 300,
         "maxDurationSeconds": 900,
-        "endCallMessage": "Thank you for testing the secure Wedge demo. Goodbye.",
+        "endCallMessage": "Goodbye.",
     }
 
 
@@ -658,6 +665,7 @@ def _validate_tool_turn(
             "clinic": "pcp_preference",
             "packet": "packet_received",
             "renewal_help": "help_preference",
+            "renewal_help_clarification": "help_preference",
             "contact_changes": "contact_information_changed",
         }
         expected = expected_fields.get(step)

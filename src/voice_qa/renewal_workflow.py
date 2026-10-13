@@ -171,12 +171,44 @@ class RenewalWorkflowController:
                         "your renewal?"
                     ),
                 }
+            if session.facts.get("help_preference") == "uncertain":
+                return {
+                    "step": "renewal_help_clarification",
+                    "say": (
+                        "Phone help can guide you remotely, clinic help is in person, "
+                        "and you can also continue on your own or choose no help. "
+                        "Which option would you prefer?"
+                    ),
+                }
+            if (
+                session.facts.get("help_preference") == "phone"
+                and session.contact_preference == "unknown"
+            ):
+                return {
+                    "step": "callback_offer",
+                    "say": (
+                        "Phone help can walk through the renewal packet and next steps "
+                        "with you. Would you like me to record a callback request?"
+                    ),
+                }
             if "contact_information_changed" not in session.facts:
+                help_preference = session.facts.get("help_preference")
+                guidance = {
+                    "clinic": (
+                        f"For in-person renewal help, contact {session.current_clinic}'s "
+                        "enrollment desk and bring your renewal packet. "
+                    ),
+                    "self_service": (
+                        "To continue on your own, use BenefitsCal.com or follow the "
+                        "instructions in your renewal packet. "
+                    ),
+                    "none": "Okay, I won't add renewal help or ask about it again. ",
+                }.get(help_preference, "")
                 return {
                     "step": "contact_changes",
-                    "say": (
-                        "Have you moved or changed your mailing address, phone number, "
-                        "or other contact information?"
+                    "say": guidance + (
+                        "Before we finish, have you moved or changed your mailing "
+                        "address, phone number, or other contact information?"
                     ),
                 }
             if session.facts.get("contact_information_changed") == "yes":
@@ -195,19 +227,11 @@ class RenewalWorkflowController:
                     "step": "collect_profile_update",
                     "say": "Which information would you like to update first?",
                 }
-            if (
-                session.facts.get("help_preference") == "phone"
-                and session.contact_preference == "unknown"
-            ):
-                return {
-                    "step": "callback_offer",
-                    "say": "Would you like me to record a callback request for phone help?",
-                }
             return {
                 "step": "complete",
                 "say": (
                     "Thanks—that completes the renewal review. You're all done, "
-                    "and you can hang up now."
+                    "and you can hang up now. I'll end this call in about ten seconds."
                 ),
             }
 

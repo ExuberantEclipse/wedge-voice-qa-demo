@@ -234,6 +234,8 @@ class VapiDemoTests(unittest.TestCase):
         )
         self.assertIn("Automatic renewal review after verification", prompt)
         self.assertIn("Explicit callback branch", prompt)
+        self.assertIn("Treat every help choice as a real branch", prompt)
+        self.assertIn("roughly ten seconds", prompt)
         self.assertIn("Verified synthetic profile updates", prompt)
         self.assertIn("Server-directed turn control", prompt)
         self.assertIn("Every turn may contain at most one question", prompt)
@@ -676,7 +678,6 @@ class VapiDemoTests(unittest.TestCase):
                 ("pcp_preference", "keep_clinic"),
                 ("packet_received", "yes"),
                 ("help_preference", "phone"),
-                ("contact_information_changed", "no"),
             )
         ):
             self.post(
@@ -697,9 +698,20 @@ class VapiDemoTests(unittest.TestCase):
             )
         ).get_json()["results"][0]["result"]
         self.assertIn("permanently closed", declined)
-        self.assertIn('"step":"complete"', declined)
-        self.assertIn("hang up now", declined)
+        self.assertIn('"step":"contact_changes"', declined)
         self.assertNotIn('"step":"callback_offer"', declined)
+
+        completed = self.post(
+            tool_request(
+                call_id,
+                "tool-contact-no",
+                "record_workflow_fact",
+                {"field": "contact_information_changed", "value": "no"},
+            )
+        ).get_json()["results"][0]["result"]
+        self.assertIn('"step":"complete"', completed)
+        self.assertIn("hang up now", completed)
+        self.assertIn("ten seconds", completed)
 
     def test_explicit_callback_flow_collects_structured_details(self):
         self.post(assistant_request("call-callback", "+14255550123"))
