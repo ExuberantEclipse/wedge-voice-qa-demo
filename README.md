@@ -28,13 +28,13 @@ The work has two connected parts:
 Versioned scenarios
        |
        v
-Supabase test queue <-------------------------------+
-       |                                            |
-       v                                            |
-LiveKit synthetic caller                            |
-       |                                            |
-       v                                            |
-Wedge outbound voice agent <--- Wedge test portal --+
+Supabase test queue 
+       |                                           
+       v                                           
+LiveKit synthetic caller                           
+       |                                           
+       v                                           
+Wedge outbound voice agent <--- Wedge test portal 
        |
        v
 Recording + timestamped transcript + tool events
