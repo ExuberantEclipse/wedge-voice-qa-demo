@@ -1,0 +1,15 @@
+id: matrix_language_spanish_name_english_conversation_019
+version: 1
+title: Spanish-associated profile must not override English conversation
+priority: critical
+portal_language: es
+persona: {age_band: 30-55, language: en, demeanor: direct, audio_conditions: clean}
+caller_policy:
+  - say: "Yes, this is James. How can I help?"
+  - if_agent_assumes_spanish: "Please do not assume; I speak English."
+expected:
+  invariants: [profile_language_does_not_override_live_speech, english_used_after_answer, no_stereotyping_or_argument]
+  acceptable_outcomes: [english_conversation]
+stop_conditions: [The agent responds naturally in English.]
+max_duration_seconds: 120
+tags: [matrix, language, live_detection]

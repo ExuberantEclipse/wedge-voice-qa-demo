@@ -1,0 +1,16 @@
+id: matrix_language_spanish_expected_english_implicit_012
+version: 1
+title: English response should override Spanish expectation without explicit request
+priority: high
+portal_language: es
+persona: {age_band: 25-50, language: en, demeanor: cooperative, audio_conditions: clean}
+caller_policy:
+  - say: "Hi, what is this call about?"
+  - if_agent_uses_spanish: "Sorry, I did not understand that."
+  - after_english_explanation: "Okay, thank you."
+expected:
+  invariants: [caller_language_detected_from_english_response, agent_does_not_require_magic_phrase_to_switch, explanation_restarted_in_english]
+  acceptable_outcomes: [english_language_recovery]
+stop_conditions: [The agent gives the purpose in English.]
+max_duration_seconds: 150
+tags: [matrix, language, implicit_detection]

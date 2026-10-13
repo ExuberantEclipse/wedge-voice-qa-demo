@@ -1,0 +1,281 @@
+{
+  "attempt_id": "28014aad-0c92-4e32-a34b-6c48123479f4",
+  "events": [
+    {
+      "actor": "agent",
+      "id": "68c253f6-3fcd-49e8-8665-ec9caac8868e",
+      "offset_ms": 6400,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Hi! Is this James?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "7f738ade-0813-49da-9dfd-cf97d6a872dd",
+      "offset_ms": 13900,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Yes. This is James.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "2aaf0ec4-1f78-49cf-ae09-a6b1b37f4c6b",
+      "offset_ms": 14100,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Great, thanks! This is Maria from Universal Community Health Center \u2014 and just so you know, this call is recorded for quality. How are you doing today?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "4997eec0-d6b0-4ee7-9b8f-f60c0cd0ef9d",
+      "offset_ms": 26200,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "I'm doing well. Thank you.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "4a0183b3-a6bf-4ea9-93ff-ec733ac32414",
+      "offset_ms": 26200,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "I'm glad to hear that, James. So \u2014 I'm calling about your Medi-Cal coverage. Can I ask you a couple quick questions?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "c1b2a476-08cd-4964-a400-ec85ea3c0ebf",
+      "offset_ms": 37600,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Sure.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "4782f368-d65c-48a1-a407-6a167ff3443f",
+      "offset_ms": 38200,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Our records show you're still on Medi-Cal. Is that right?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "c2ed992e-697d-440d-9a66-8c263e8809a1",
+      "offset_ms": 45300,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Yes. That's correct.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "894e0e19-a5f7-4575-81af-69dea60c7692",
+      "offset_ms": 46800,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Got it. And are you planning to keep Universal Community Health Center as your Medi-Cal primary care \u2014 your main doctor's office?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "1373d469-586f-473d-9027-8de5b1a23a9e",
+      "offset_ms": 58100,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Yes. I am.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "dab338f2-8377-45e9-a53d-6be7c80f0d6f",
+      "offset_ms": 59800,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Medi-Cal is checking everyone's coverage this year. You'll get a renewal packet in the mail from the county \u2014 usually a yellow envelope, and it has a due date on it. Please don't set it aside. If you'd like help filling it out, we do that for free, over the phone or right at the clinic. Would you like me to arrange that help for you?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "0c41ab03-a683-4ade-9604-b4aa7eb9493a",
+      "offset_ms": 84100,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "I can take a callback, but only after 5PM.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "17efff7a-b577-4a31-a245-9b8556f3114b",
+      "offset_ms": 84900,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Would you prefer someone to call you back, or would you rather come into the clinic for an appointment?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "6e1ade12-9fb9-4c8f-baa9-7d47244f2394",
+      "offset_ms": 96100,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "I can take a callback, but only after 5PM.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "cac598b4-e63a-4e94-8554-4af596a6103d",
+      "offset_ms": 96900,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Thanks for letting me know. What day and time works best for a callback after 5PM?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "65ea4379-5e9a-4538-8128-9441eac13818",
+      "offset_ms": 106200,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Tomorrow after five works.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "31efc5b3-d3f9-4859-9b17-9ae2f0a7190f",
+      "offset_ms": 108800,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Got it. What's the best way to reach you \u2014 text, phone call, or something else?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "679a7ac0-838d-4bfd-9626-f49828e920d3",
+      "offset_ms": 118700,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "A phone call is fine.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "7121bed9-767d-4d13-8dbd-fc982b075b69",
+      "offset_ms": 118800,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "And what language do you prefer \u2014 English, Spanish, or another language?",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "2e3244bd-5a87-499b-80b1-9cb310815d8d",
+      "offset_ms": 134100,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Sorry, are you still there?",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "4606f781-f0a7-478f-a4e6-4fc6fc7673fb",
+      "offset_ms": 177300,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "I haven't heard anything, so I'll let you go for now \u2014 please give us a call back when it's a good time. Take care!",
+      "type": "utterance"
+    }
+  ],
+  "fixture_version": 1,
+  "grader_results": [
+    {
+      "grader_id": "artifacts.transcript",
+      "grader_version": "1.0.0",
+      "raw_output": null,
+      "score": 100.0,
+      "status": "pass"
+    },
+    {
+      "grader_id": "scenario.invariants",
+      "grader_version": "1.0.0",
+      "raw_output": {
+        "summary": "Caller James states he can only take a callback after 5PM. Agent confirms and schedules a callback for tomorrow after five, confirming the time and best contact method before the call ended without a final confirmation of the callback appointment."
+      },
+      "score": 100.0,
+      "status": "pass"
+    }
+  ],
+  "scenario": {
+    "caller_policy": [
+      {
+        "say": "I can take a callback, but only after five PM."
+      },
+      {
+        "if_earlier_time_offered": "No, after five only."
+      },
+      {
+        "after_correct_confirmation": "Yes, that works."
+      }
+    ],
+    "expected": {
+      "acceptable_outcomes": [
+        "callback_after_five_scheduled"
+      ],
+      "invariants": [
+        "callback_time_constraint_preserved",
+        "no_earlier_callback_confirmed",
+        "explicit_time_confirmation"
+      ]
+    },
+    "id": "matrix_callback_after_five_only_006",
+    "max_duration_seconds": 120,
+    "persona": {
+      "age_band": "30-55",
+      "audio_conditions": "clean",
+      "demeanor": "precise",
+      "language": "en"
+    },
+    "portal_language": "en",
+    "priority": "high",
+    "stop_conditions": [
+      "The agent accurately confirms a callback after five PM."
+    ],
+    "tags": [
+      "matrix",
+      "callback",
+      "time_constraint"
+    ],
+    "title": "Member allows callback only after five PM",
+    "version": 1
+  },
+  "scenario_id": "matrix_callback_after_five_only_006",
+  "scenario_version": 1,
+  "stored_outcome": "passed",
+  "stored_status": "completed"
+}

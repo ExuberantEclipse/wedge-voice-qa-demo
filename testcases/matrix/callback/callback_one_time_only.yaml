@@ -1,0 +1,15 @@
+id: matrix_callback_one_time_only_010
+version: 1
+title: Member consents to one specific callback only
+priority: high
+portal_language: en
+persona: {age_band: 30-65, language: en, demeanor: careful, audio_conditions: clean}
+caller_policy:
+  - say: "You may call once tomorrow at ten AM, but no other calls."
+  - if_recurring_contact_implied: "I only consented to one call tomorrow at ten."
+expected:
+  invariants: [single_callback_scope_preserved, exact_time_confirmed, no_recurring_contact_claimed]
+  acceptable_outcomes: [one_time_callback_scheduled]
+stop_conditions: [The agent confirms exactly one callback tomorrow at ten AM.]
+max_duration_seconds: 120
+tags: [matrix, callback, limited_consent]

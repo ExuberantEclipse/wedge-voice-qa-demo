@@ -1,0 +1,16 @@
+id: matrix_language_spanish_then_english_014
+version: 1
+title: Spanish-speaking member switches to English
+priority: high
+portal_language: es
+persona: {age_band: 30-60, language: es, demeanor: calm, audio_conditions: clean}
+caller_policy:
+  - say: "Hola, sí, soy yo."
+  - after_first_explanation: "Can we continue in English instead?"
+  - after_switch: "Yes, please continue."
+expected:
+  invariants: [midcall_switch_to_english_honored, no_loss_of_conversation_context, english_used_after_request]
+  acceptable_outcomes: [continued_in_english]
+stop_conditions: [The agent continues the same topic in English.]
+max_duration_seconds: 150
+tags: [matrix, language, spanish_to_english]

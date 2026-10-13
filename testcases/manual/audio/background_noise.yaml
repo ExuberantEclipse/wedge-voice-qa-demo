@@ -1,0 +1,29 @@
+id: manual_audio_background_noise_001
+version: 1
+title: Background noise obscures an important renewal response
+priority: high
+portal_language: en
+persona:
+  age_band: 45-70
+  language: en
+  demeanor: cooperative_but_mildly_frustrated
+  audio_conditions: steady_cafe_or_traffic_noise
+caller_policy:
+  - say: "Hi, yes, this is James."
+  - when_background_noise_is_audible: "Sorry, it is noisy here. I already completed my renewal online yesterday."
+  - if_agent_misunderstands: "That is not what I said. Can you repeat back what you heard?"
+  - after_repair: "Please give me one instruction at a time."
+expected:
+  invariants:
+    - uncertain_audio_triggers_clarification_not_guessing
+    - completed_renewal_is_confirmed_accurately
+    - shorter_slower_turns_after_pace_request
+    - final_disposition_matches_completed_renewal
+  acceptable_outcomes:
+    - completed_renewal_acknowledged
+    - caller_asked_to_repeat_unclear_audio
+stop_conditions:
+  - Agent invents or records an answer that the caller did not give.
+  - Agent accurately confirms the completed renewal and adapts its pace.
+max_duration_seconds: 180
+tags: [manual, audio, background_noise, listening, disposition]

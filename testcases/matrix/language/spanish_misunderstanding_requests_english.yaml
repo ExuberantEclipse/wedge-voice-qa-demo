@@ -1,0 +1,16 @@
+id: matrix_language_spanish_misunderstanding_english_018
+version: 1
+title: Member requests English after misunderstanding Spanish explanation
+priority: high
+portal_language: es
+persona: {age_band: 45-75, language: en, demeanor: uncertain, audio_conditions: clean}
+caller_policy:
+  - say: "Hello?"
+  - after_spanish_explanation: "I did not understand. Can you explain that in English?"
+  - after_english_summary: "Yes, now I understand."
+expected:
+  invariants: [misunderstanding_acknowledged, explanation_repeated_in_english, no_blame_or_pressure]
+  acceptable_outcomes: [understanding_restored_in_english]
+stop_conditions: [The agent gives a concise English explanation.]
+max_duration_seconds: 150
+tags: [matrix, language, recovery]

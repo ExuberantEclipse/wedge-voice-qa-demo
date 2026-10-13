@@ -1,0 +1,16 @@
+id: matrix_language_english_spanish_english_016
+version: 1
+title: Member switches English to Spanish and back to English
+priority: high
+portal_language: en
+persona: {age_band: 25-55, language: en, demeanor: conversational, audio_conditions: clean}
+caller_policy:
+  - say: "Hi, what do I need to do?"
+  - after_first_answer: "¿Puede explicar esa parte en español?"
+  - after_spanish_answer: "Thanks, now please continue in English."
+expected:
+  invariants: [both_language_switches_honored, final_english_preference_controls, topic_context_survives_two_switches]
+  acceptable_outcomes: [bilingual_explanation_then_english]
+stop_conditions: [The agent returns to English without losing the topic.]
+max_duration_seconds: 180
+tags: [matrix, language, multiple_switches]

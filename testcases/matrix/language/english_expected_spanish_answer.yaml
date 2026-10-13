@@ -1,0 +1,16 @@
+id: matrix_language_english_expected_spanish_answer_015
+version: 1
+title: Agent expects English but member answers in Spanish
+priority: critical
+portal_language: en
+persona: {age_band: 30-65, language: es, demeanor: neutral, audio_conditions: clean}
+caller_policy:
+  - say: "Hola, prefiero hablar en español."
+  - if_agent_continues_in_english: "Español, por favor."
+  - after_switch: "Sí, gracias."
+expected:
+  invariants: [spanish_preference_honored, agent_switches_without_restarting_call, context_preserved_in_spanish]
+  acceptable_outcomes: [conversation_continues_in_spanish]
+stop_conditions: [The agent continues clearly in Spanish.]
+max_duration_seconds: 150
+tags: [matrix, language, expected_english, spanish]

@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wedge-voice-qa"
+version = "0.1.0"
+description = "Scenario-driven inbound caller for testing the Wedge voice agent"
+readme = "README.md"
+requires-python = ">=3.10,<3.15"
+dependencies = [
+  "Flask==3.1.3",
+  "livekit-agents==1.8.4",
+  "python-dotenv>=1.0,<2",
+  "PyYAML>=6.0.3,<7",
+  "twilio==9.12.0",
+]
+
+[project.scripts]
+voice-qa = "voice_qa.cli:main"
+voice-qa-worker = "voice_qa.livekit_worker:main"
+voice-qa-twilio-demo = "voice_qa.twilio_demo:main"
+voice-qa-vapi-demo = "voice_qa.vapi_demo:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+

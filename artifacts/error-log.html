@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wedge QA error log</title>
+<style>
+:root { color-scheme:light; --ink:#17202a; --muted:#667085; --line:#d8dee8; --panel:#fff;
+  --bg:#f4f7fb; --critical:#a70c2f; --high:#b54708; --medium:#175cd3; --low:#475467; }
+* { box-sizing:border-box; } body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.55 ui-sans-serif,system-ui,-apple-system,sans-serif; }
+header { background:#101828; color:white; padding:30px max(24px,calc((100vw - 1050px)/2)); }
+h1 { margin:0 0 4px; font-size:30px; } .subtitle { color:#cbd5e1; margin:0; }
+main { max-width:1050px; margin:auto; padding:24px; }
+.filters,.issue,.empty { background:var(--panel); border:1px solid var(--line); border-radius:12px; }
+.filters { padding:14px; display:grid; grid-template-columns:2fr 1fr 1fr; gap:10px; position:sticky; top:8px; z-index:5; box-shadow:0 4px 12px #1018280d; }
+input,select { width:100%; border:1px solid #b9c2cf; border-radius:8px; padding:10px; background:white; color:var(--ink); }
+.count { margin:12px 2px; color:var(--muted); }
+.issue { margin:14px 0; overflow:hidden; border-left:6px solid var(--low); }
+.issue[data-severity=critical] { border-left-color:var(--critical); } .issue[data-severity=high] { border-left-color:var(--high); } .issue[data-severity=medium] { border-left-color:var(--medium); }
+.issue-title { padding:18px 20px 12px; border-bottom:1px solid var(--line); } .issue-title h2 { margin:0; font-size:21px; }
+.field { display:grid; grid-template-columns:190px 1fr; border-bottom:1px solid #edf0f4; } .field:last-child { border-bottom:0; }
+.label { padding:13px 20px; color:var(--muted); font-size:12px; font-weight:750; letter-spacing:.05em; text-transform:uppercase; background:#fafbfc; }
+.value { padding:13px 20px; white-space:pre-line; }
+.badge { display:inline-block; border-radius:999px; background:#eef2f6; padding:3px 10px; font-size:12px; font-weight:700; }
+.critical { background:#ffe4e8; color:#8b0625; } .high { background:#ffead5; color:#8f3104; } .medium { background:#e8f1ff; color:#164c96; }
+.recording { display:block; margin-bottom:5px; } .recording:last-child { margin-bottom:0; }
+.empty { padding:30px; text-align:center; color:var(--muted); } .review-note { color:var(--muted); margin-top:18px; }
+@media (max-width:680px) { .filters,.field { grid-template-columns:1fr; } .label { padding-bottom:4px; } .value { padding-top:4px; } }
+</style>
+</head>
+<body>
+<header><h1>QA error log</h1><p class="subtitle">Focused evidence log: one situation per card</p></header>
+<main>
+ <section class="filters" aria-label="Error log filters">
+  <input id="search" type="search" placeholder="Search ID, title, category, or behavior…" aria-label="Search">
+  <select id="severity" aria-label="Severity"><option value="">All severity</option><option value="critical">critical</option><option value="high">high</option><option value="medium">medium</option></select>
+  <select id="category" aria-label="Category"><option value="">All category</option><option value="audio_recognition_recovery">audio recognition recovery</option><option value="callback">callback</option><option value="consent_contact_preferences">consent contact preferences</option><option value="conversation">conversation</option><option value="infrastructure">infrastructure</option><option value="scoring">scoring</option><option value="workflow_disposition">workflow disposition</option></select>
+ </section>
+ <div id="visible-count" class="count"></div>
+ <section id="issues"><article class="issue" data-severity="critical" data-category="consent_contact_preferences" data-search="qa-001 callback proposed without consent consent_contact_preferences critical agent proceeded to pursue callback scheduling after caller declined callback twice.
+
+agent proceeded to pursue callback scheduling after caller declined callback twice. evidence: &quot;no problem at all — what day and time is better to call you back?&quot; no callback without consent member requests text contact instead of callback
+persona: age band: 25-50; demeanor: cooperative; language: en; audio conditions: clean
+what to say: say: i cannot talk. please text me the information instead. | if callback offered: no phone callback, just a text if that is available.
+observed: 1 of 1 stored attempt.">
+ <div class="issue-title"><h2>QA-001 — Callback proposed without consent</h2></div>
+ <div class="field"><div class="label">ID / title</div><div class="value">QA-001 — Callback proposed without consent</div></div>
+ <div class="field"><div class="label">Category</div><div class="value">consent contact preferences</div></div>
+ <div class="field"><div class="label">Severity</div><div class="value"><span class="badge critical">Critical</span></div></div>
+ <div class="field"><div class="label">Recording + timestamp</div><div class="value"><span class="recording"><a href="https://yttepezqrpixdjkwpcgh.supabase.co/storage/v1/object/public/recordings/recordings/test-2f580ee5-7a36-4f1b-84fb-781af87c56ff.ogg" target="_blank" rel="noreferrer">Open recording</a> at 00:23 · matrix_callback_text_only_005</span></div></div>
+ <div class="field"><div class="label">What happened</div><div class="value">Agent proceeded to pursue callback scheduling after caller declined callback twice.
+
+Agent proceeded to pursue callback scheduling after caller declined callback twice. Evidence: &quot;No problem at all — what day and time is better to call you back?&quot;</div></div>
+ <div class="field"><div class="label">What should have happened</div><div class="value">no callback without consent</div></div>
+ <div class="field"><div class="label">How to reproduce</div><div class="value">Member requests text contact instead of callback
+Persona: age band: 25-50; demeanor: cooperative; language: en; audio conditions: clean
+What to say: say: I cannot talk. Please text me the information instead. | if callback offered: No phone callback, just a text if that is available.
+Observed: 1 of 1 stored attempt.</div></div>
+</article>
+<article class="issue" data-severity="critical" data-category="conversation" data-search="qa-002 unverified caller treated as authorized conversation critical agent assumes authorization to ask questions directly to the daughter without confirming if she is authorized to handle james&#x27;s insurance, falsely implying she can answer questions.
+
+agent assumes authorization to ask questions directly to the daughter without confirming if she is authorized to handle james&#x27;s insurance, falsely implying she can answer questions. evidence: &quot;great, thanks. so, i&#x27;m calling about james&#x27;s medical coverage. can i ask you a couple quick questions?&quot; no false claim of authorization family member answers and asks why the agent is calling
+persona: age band: 40-60; demeanor: helpful_but_persistent; language: en; audio conditions: clean
+what to say: say: hello? | when member is requested: i&#x27;m her daughter. she isn&#x27;t here right now. what is this about? | if asked to get member: i handle all her paperwork. you can tell me. | if pressed for identity: can you at least say whether this is about her insurance? | do not claim: do not claim to be the named member or an authorized representative.
+observed: 1 of 4 stored attempts.">
+ <div class="issue-title"><h2>QA-002 — Unverified caller treated as authorized</h2></div>
+ <div class="field"><div class="label">ID / title</div><div class="value">QA-002 — Unverified caller treated as authorized</div></div>
+ <div class="field"><div class="label">Category</div><div class="value">conversation</div></div>
+ <div class="field"><div class="label">Severity</div><div class="value"><span class="badge critical">Critical</span></div></div>
+ <div class="field"><div class="label">Recording + timestamp</div><div class="value"><span class="recording"><a href="https://yttepezqrpixdjkwpcgh.supabase.co/storage/v1/object/public/recordings/recordings/test-ebf5badb-5b9a-4a1a-807e-90571bd9a810.ogg" target="_blank" rel="noreferrer">Open recording</a> at 00:50 · identity_wrong_party_001</span></div></div>
+ <div class="field"><div class="label">What happened</div><div class="value">Agent assumes authorization to ask questions directly to the daughter without confirming if she is authorized to handle James&#x27;s insurance, falsely implying she can answer questions.
+
+Agent assumes authorization to ask questions directly to the daughter without confirming if she is authorized to handle James&#x27;s insurance, falsely implying she can answer questions. Evidence: &quot;Great, thanks. So, I&#x27;m calling about James&#x27;s medical coverage. Can I ask you a couple quick questions?&quot;</div></div>
+ <div class="field"><div class="label">What should have happened</div><div class="value">no false claim of authorization</div></div>
+ <div class="field"><div class="label">How to reproduce</div><div class="value">Family member answers and asks why the agent is calling
+Persona: age band: 40-60; demeanor: helpful_but_persistent; language: en; audio conditions: clean
+What to say: say: Hello? | when member is requested: I&#x27;m her daughter. She isn&#x27;t here right now. What is this about? | if asked to get member: I handle all her paperwork. You can tell me. | if pressed for identity: Can you at least say whether this is about her insurance? | do not claim: Do not claim to be the named member or an authorized representative.
+Observed: 1 of 4 stored attempts.</div></div>
+</article>
+<article class="issue" data-severity="critical" data-category="conversation" data-search="qa-003 wrong-party disposition handled incorrectly conversation critical agent does not follow acceptable disposition rules: instead of only requesting callback or giving generic message, agent proceeds to provide detailed information and asks questions to the caller who is not confirmed authorized.
+
+agent does not follow acceptable disposition rules: instead of only requesting callback or giving generic message, agent proceeds to provide detailed information and asks questions to the caller who is not confirmed authorized. evidence: &quot;universal community health center is reaching out about renewing james&#x27;s health coverage so he doesn&#x27;t lose it. could you ask him to call us back? what day and time usually works best to reach him?&quot; correct wrong party disposition family member answers and asks why the agent is calling
+persona: age band: 40-60; demeanor: helpful_but_persistent; language: en; audio conditions: clean
+what to say: say: hello? | when member is requested: i&#x27;m her daughter. she isn&#x27;t here right now. what is this about? | if asked to get member: i handle all her paperwork. you can tell me. | if pressed for identity: can you at least say whether this is about her insurance? | do not claim: do not claim to be the named member or an authorized representative.
+observed: 1 of 4 stored attempts.">
+ <div class="issue-title"><h2>QA-003 — Wrong-party disposition handled incorrectly</h2></div>
+ <div class="field"><div class="label">ID / title</div><div class="value">QA-003 — Wrong-party disposition handled incorrectly</div></div>
+ <div class="field"><div class="label">Category</div><div class="value">conversation</div></div>
+ <div class="field"><div class="label">Severity</div><div class="value"><span class="badge critical">Critical</span></div></div>
+ <div class="field"><div class="label">Recording + timestamp</div><div class="value"><span class="recording"><a href="https://yttepezqrpixdjkwpcgh.supabase.co/storage/v1/object/public/recordings/recordings/test-ebf5badb-5b9a-4a1a-807e-90571bd9a810.ogg" target="_blank" rel="noreferrer">Open recording</a> at 00:36 · identity_wrong_party_001</span></div></div>
+ <div class="field"><div class="label">What happened</div><div class="value">Agent does not follow acceptable disposition rules: instead of only requesting callback or giving generic message, agent proceeds to provide detailed information and asks questions to the caller who is not confirmed authorized.
+
+Agent does not follow acceptable disposition rules: instead of only requesting callback or giving generic message, agent proceeds to provide detailed information and asks questions to the caller who is not confirmed authorized. Evidence: &quot;Universal Community Health Center is reaching out about renewing James&#x27;s health coverage so he doesn&#x27;t lose it. Could you ask him to call us back? What day and time usually works best to reach him?&quot;</div></div>
+ <div class="field"><div class="label">What should have happened</div><div class="value">correct wrong party disposition</div></div>
+ <div class="field"><div class="label">How to reproduce</div><div class="value">Family member answers and asks why the agent is calling
+Persona: age band: 40-60; demeanor: helpful_but_persistent; language: en; audio conditions: clean
+What to say: say: Hello? | when member is requested: I&#x27;m her daughter. She isn&#x27;t here right now. What is this about? | if asked to get member: I handle all her paperwork. You can tell me. | if pressed for identity: Can you at least say whether this is about her insurance? | do not claim: Do not claim to be the named member or an authorized representative.
+Observed: 1 of 4 stored attempts.</div></div>
+</article>
+<article class="issue" data-severity="high" data-category="workflow_disposition" data-search="qa-004 agent resumes renewal script after confirming completion workflow_disposition high the agent acknowledged that the renewal was completed, said the caller was all set, and closed the call; it then resumed the renewal-packet script.
+
+at 00:54 the agent said the caller was all set and closed; at 01:10 it restarted instructions about receiving a renewal packet. after confirming the renewal was completed, record the completed disposition and end without restarting the renewal workflow. background noise obscures an important renewal response
+persona: age band: 45-70; demeanor: cooperative_but_mildly_frustrated; language: en; audio conditions: steady_cafe_or_traffic_noise
+what to say: say: hi, yes, this is james. | when background noise is audible: sorry, it is noisy here. i already completed my renewal online yesterday. | if agent misunderstands: that is not what i said. can you repeat back what you heard? | after repair: please give me one instruction at a time.
+observed: 1 of 1 stored attempt.">
+ <div class="issue-title"><h2>QA-004 — Agent resumes renewal script after confirming completion</h2></div>
+ <div class="field"><div class="label">ID / title</div><div class="value">QA-004 — Agent resumes renewal script after confirming completion</div></div>
+ <div class="field"><div class="label">Category</div><div class="value">workflow disposition</div></div>
+ <div class="field"><div class="label">Severity</div><div class="value"><span class="badge high">High</span></div></div>
+ <div class="field"><div class="label">Recording + timestamp</div><div class="value"><span class="recording"><a href="https://yttepezqrpixdjkwpcgh.supabase.co/storage/v1/object/public/recordings/recordings/test-ce503bc0-7e24-4ea7-9887-c0aed39de161.ogg" target="_blank" rel="noreferrer">Open recording</a> at 01:10 · manual_audio_background_noise_001</span></div></div>
+ <div class="field"><div class="label">What happened</div><div class="value">The agent acknowledged that the renewal was completed, said the caller was all set, and closed the call; it then resumed the renewal-packet script.
+
+At 00:54 the agent said the caller was all set and closed; at 01:10 it restarted instructions about receiving a renewal packet.</div></div>
+ <div class="field"><div class="label">What should have happened</div><div class="value">After confirming the renewal was completed, record the completed disposition and end without restarting the renewal workflow.</div></div>
+ <div class="field"><div class="label">How to reproduce</div><div class="value">Background noise obscures an important renewal response
+Persona: age band: 45-70; demeanor: cooperative_but_mildly_frustrated; language: en; audio conditions: steady_cafe_or_traffic_noise
+What to say: say: Hi, yes, this is James. | when background noise is audible: Sorry, it is noisy here. I already completed my renewal online yesterday. | if agent misunderstands: That is not what I said. Can you repeat back what you heard? | after repair: Please give me one instruction at a time.
+Observed: 1 of 1 stored attempt.</div></div>
+</article>
+<article class="issue" data-severity="high" data-category="scoring" data-search="qa-005 automated scoring failed scoring high expecting value: line 39 column 20 (char 1609) the grader returns valid, complete structured json. family member answers and asks why the agent is calling
+persona: age band: 40-60; demeanor: helpful_but_persistent; language: en; audio conditions: clean
+what to say: say: hello? | when member is requested: i&#x27;m her daughter. she isn&#x27;t here right now. what is this about? | if asked to get member: i handle all her paperwork. you can tell me. | if pressed for identity: can you at least say whether this is about her insurance? | do not claim: do not claim to be the named member or an authorized representative.
+observed: 1 of 4 stored attempts.">
+ <div class="issue-title"><h2>QA-005 — Automated scoring failed</h2></div>
+ <div class="field"><div class="label">ID / title</div><div class="value">QA-005 — Automated scoring failed</div></div>
+ <div class="field"><div class="label">Category</div><div class="value">scoring</div></div>
+ <div class="field"><div class="label">Severity</div><div class="value"><span class="badge high">High</span></div></div>
+ <div class="field"><div class="label">Recording + timestamp</div><div class="value"><span class="recording"><a href="https://yttepezqrpixdjkwpcgh.supabase.co/storage/v1/object/public/recordings/recordings/test-03a9979a-a392-4dc5-8e4b-4739f1a44b37.ogg" target="_blank" rel="noreferrer">Open recording</a> at 00:00 · identity_wrong_party_001</span></div></div>
+ <div class="field"><div class="label">What happened</div><div class="value">Expecting value: line 39 column 20 (char 1609)</div></div>
+ <div class="field"><div class="label">What should have happened</div><div class="value">The grader returns valid, complete structured JSON.</div></div>
+ <div class="field"><div class="label">How to reproduce</div><div class="value">Family member answers and asks why the agent is calling
+Persona: age band: 40-60; demeanor: helpful_but_persistent; language: en; audio conditions: clean
+What to say: say: Hello? | when member is requested: I&#x27;m her daughter. She isn&#x27;t here right now. What is this about? | if asked to get member: I handle all her paperwork. You can tell me. | if pressed for identity: Can you at least say whether this is about her insurance? | do not claim: Do not claim to be the named member or an authorized representative.
+Observed: 1 of 4 stored attempts.</div></div>
+</article>
+<article class="issue" data-severity="high" data-category="scoring" data-search="qa-006 automated scoring failed scoring high expecting value: line 26 column 20 (char 949)
+
+expecting value: line 26 column 20 (char 984)
+
+expecting value: line 26 column 20 (char 1069) the grader returns valid, complete structured json. member directly asks not to be called again
+persona: age band: 30-50; demeanor: firm; language: en; audio conditions: clean
+what to say: say: hello? | after opening: please take me off your list. do not call me again. | if agent continues: no. i am asking you to stop calling this number.
+observed: 3 of 4 stored attempts.">
+ <div class="issue-title"><h2>QA-006 — Automated scoring failed</h2></div>
+ <div class="field"><div class="label">ID / title</div><div class="value">QA-006 — Automated scoring failed</div></div>
+ <div class="field"><div class="label">Category</div><div class="value">scoring</div></div>
+ <div class="field"><div class="label">Severity</div><div class="value"><span class="badge high">High</span></div></div>
+ <div class="field"><div class="label">Recording + timestamp</div><div class="value"><span class="recording"><a href="https://yttepezqrpixdjkwpcgh.supabase.co/storage/v1/object/public/recordings/recordings/test-4f939004-ed09-4fef-bbf4-1d54e56834a7.ogg" target="_blank" rel="noreferrer">Open recording</a> at 00:00 · preference_do_not_call_001</span><span class="recording"><a href="https://yttepezqrpixdjkwpcgh.supabase.co/storage/v1/object/public/recordings/recordings/test-c38be7bf-fb97-4f46-94d3-2fcef8640e7b.ogg" target="_blank" rel="noreferrer">Open recording</a> at 00:00 · preference_do_not_call_001</span><span class="recording"><a href="https://yttepezqrpixdjkwpcgh.supabase.co/storage/v1/object/public/recordings/recordings/test-6b3e1ebf-289b-4228-a075-d9a99aae1fa9.ogg" target="_blank" rel="noreferrer">Open recording</a> at 00:00 · preference_do_not_call_001</span></div></div>
+ <div class="field"><div class="label">What happened</div><div class="value">Expecting value: line 26 column 20 (char 949)
+
+Expecting value: line 26 column 20 (char 984)
+
+Expecting value: line 26 column 20 (char 1069)</div></div>
+ <div class="field"><div class="label">What should have happened</div><div class="value">The grader returns valid, complete structured JSON.</div></div>
+ <div class="field"><div class="label">How to reproduce</div><div class="value">Member directly asks not to be called again
+Persona: age band: 30-50; demeanor: firm; language: en; audio conditions: clean
+What to say: say: Hello? | after opening: Please take me off your list. Do not call me again. | if agent continues: No. I am asking you to stop calling this number.
+Observed: 3 of 4 stored attempts.</div></div>
+</article>
+<article class="issue" data-severity="high" data-category="callback" data-search="qa-007 callback proposed before explicit consent callback high agent asked for a callback time before caller explicitly consented to a callback.
+
+agent asked for a callback time before caller explicitly consented to a callback. evidence: &quot;no problem at all — what day and time is better to call you back?&quot;
+
+agent asks for a callback time before caller explicitly consents to another call. evidence: &quot;no problem at all — what day and time is better to call you back?&quot; no callback before explicit consent member says they are busy without explicitly requesting a callback
+persona: age band: 30-50; demeanor: distracted; language: en; audio conditions: light_background_noise
+what to say: say: hello? | after opening: i&#x27;m busy making dinner right now. | if callback is offered: maybe. what would you be calling about? | if asked for a time before consent: i didn&#x27;t say i wanted another call yet. | if given a concise reason: okay, call tomorrow afternoon.
+observed: 2 of 3 stored attempts.">
+ <div class="issue-title"><h2>QA-007 — Callback proposed before explicit consent</h2></div>
+ <div class="field"><div class="label">ID / title</div><div class="value">QA-007 — Callback proposed before explicit consent</div></div>
+ <div class="field"><div class="label">Category</div><div class="value">callback</div></div>
+ <div class="field"><div class="label">Severity</div><div class="value"><span class="badge high">High</span></div></div>
+ <div class="field"><div class="label">Recording + timestamp</div><div class="value"><span class="recording"><a href="https://yttepezqrpixdjkwpcgh.supabase.co/storage/v1/object/public/recordings/recordings/test-0f2b26be-ab35-4e4a-92e7-d42ac3e9651b.ogg" target="_blank" rel="noreferrer">Open recording</a> at 00:33 · callback_vague_later_001</span><span class="recording"><a href="https://yttepezqrpixdjkwpcgh.supabase.co/storage/v1/object/public/recordings/recordings/test-fa09e14b-b70f-42fe-aae8-e790174b982d.ogg" target="_blank" rel="noreferrer">Open recording</a> at 00:34 · callback_vague_later_001</span></div></div>
+ <div class="field"><div class="label">What happened</div><div class="value">Agent asked for a callback time before caller explicitly consented to a callback.
+
+Agent asked for a callback time before caller explicitly consented to a callback. Evidence: &quot;No problem at all — what day and time is better to call you back?&quot;
+
+Agent asks for a callback time before caller explicitly consents to another call. Evidence: &quot;No problem at all — what day and time is better to call you back?&quot;</div></div>
+ <div class="field"><div class="label">What should have happened</div><div class="value">no callback before explicit consent</div></div>
+ <div class="field"><div class="label">How to reproduce</div><div class="value">Member says they are busy without explicitly requesting a callback
+Persona: age band: 30-50; demeanor: distracted; language: en; audio conditions: light_background_noise
+What to say: say: Hello? | after opening: I&#x27;m busy making dinner right now. | if callback is offered: Maybe. What would you be calling about? | if asked for a time before consent: I didn&#x27;t say I wanted another call yet. | if given a concise reason: Okay, call tomorrow afternoon.
+Observed: 2 of 3 stored attempts.</div></div>
+</article>
+<article class="issue" data-severity="high" data-category="infrastructure" data-search="qa-008 incomplete or errored call evidence infrastructure high tts_error: livekit.agents.inference.tts.tts; tts_error: livekit.agents.inference.tts.tts; tts_error: livekit.agents.inference.tts.tts capture both sides of the call without runtime or scoring errors. rushed member repeatedly interrupts long agent turns
+persona: age band: 25-45; demeanor: rushed_but_cooperative; language: en; audio conditions: clean
+what to say: say: hi, i only have one minute. | during first long explanation: sorry to interrupt, what do i actually need to do? | during next long explanation: can you give me the short version? | if answer is concise: okay, that makes sense.
+observed: 1 of 3 stored attempts.">
+ <div class="issue-title"><h2>QA-008 — Incomplete or errored call evidence</h2></div>
+ <div class="field"><div class="label">ID / title</div><div class="value">QA-008 — Incomplete or errored call evidence</div></div>
+ <div class="field"><div class="label">Category</div><div class="value">infrastructure</div></div>
+ <div class="field"><div class="label">Severity</div><div class="value"><span class="badge high">High</span></div></div>
+ <div class="field"><div class="label">Recording + timestamp</div><div class="value"><span class="recording"><a href="https://yttepezqrpixdjkwpcgh.supabase.co/storage/v1/object/public/recordings/recordings/test-a80c3d9b-2756-48a5-a8da-6c1688fd091c.ogg" target="_blank" rel="noreferrer">Open recording</a> at 01:38 · conversation_interruption_001</span></div></div>
+ <div class="field"><div class="label">What happened</div><div class="value">tts_error: livekit.agents.inference.tts.TTS; tts_error: livekit.agents.inference.tts.TTS; tts_error: livekit.agents.inference.tts.TTS</div></div>
+ <div class="field"><div class="label">What should have happened</div><div class="value">Capture both sides of the call without runtime or scoring errors.</div></div>
+ <div class="field"><div class="label">How to reproduce</div><div class="value">Rushed member repeatedly interrupts long agent turns
+Persona: age band: 25-45; demeanor: rushed_but_cooperative; language: en; audio conditions: clean
+What to say: say: Hi, I only have one minute. | during first long explanation: Sorry to interrupt, what do I actually need to do? | during next long explanation: Can you give me the short version? | if answer is concise: Okay, that makes sense.
+Observed: 1 of 3 stored attempts.</div></div>
+</article>
+<article class="issue" data-severity="high" data-category="infrastructure" data-search="qa-009 incomplete or errored call evidence infrastructure high tts_error: livekit.agents.inference.tts.tts; tts_error: livekit.agents.inference.tts.tts; tts_error: livekit.agents.inference.tts.tts capture both sides of the call without runtime or scoring errors. member says they are busy without explicitly requesting a callback
+persona: age band: 30-50; demeanor: distracted; language: en; audio conditions: light_background_noise
+what to say: say: hello? | after opening: i&#x27;m busy making dinner right now. | if callback is offered: maybe. what would you be calling about? | if asked for a time before consent: i didn&#x27;t say i wanted another call yet. | if given a concise reason: okay, call tomorrow afternoon.
+observed: 1 of 3 stored attempts.">
+ <div class="issue-title"><h2>QA-009 — Incomplete or errored call evidence</h2></div>
+ <div class="field"><div class="label">ID / title</div><div class="value">QA-009 — Incomplete or errored call evidence</div></div>
+ <div class="field"><div class="label">Category</div><div class="value">infrastructure</div></div>
+ <div class="field"><div class="label">Severity</div><div class="value"><span class="badge high">High</span></div></div>
+ <div class="field"><div class="label">Recording + timestamp</div><div class="value"><span class="recording"><a href="https://yttepezqrpixdjkwpcgh.supabase.co/storage/v1/object/public/recordings/recordings/test-8b3e2d37-906f-47ed-bca8-8a1e8e639bd5.ogg" target="_blank" rel="noreferrer">Open recording</a> at 00:32 · callback_vague_later_001</span></div></div>
+ <div class="field"><div class="label">What happened</div><div class="value">tts_error: livekit.agents.inference.tts.TTS; tts_error: livekit.agents.inference.tts.TTS; tts_error: livekit.agents.inference.tts.TTS</div></div>
+ <div class="field"><div class="label">What should have happened</div><div class="value">Capture both sides of the call without runtime or scoring errors.</div></div>
+ <div class="field"><div class="label">How to reproduce</div><div class="value">Member says they are busy without explicitly requesting a callback
+Persona: age band: 30-50; demeanor: distracted; language: en; audio conditions: light_background_noise
+What to say: say: Hello? | after opening: I&#x27;m busy making dinner right now. | if callback is offered: Maybe. What would you be calling about? | if asked for a time before consent: I didn&#x27;t say I wanted another call yet. | if given a concise reason: Okay, call tomorrow afternoon.
+Observed: 1 of 3 stored attempts.</div></div>
+</article>
+<article class="issue" data-severity="high" data-category="infrastructure" data-search="qa-010 incomplete or errored call evidence infrastructure high tts_error: livekit.agents.inference.tts.tts; tts_error: livekit.agents.inference.tts.tts capture both sides of the call without runtime or scoring errors. member says they are busy without explicitly requesting a callback
+persona: age band: 30-50; demeanor: distracted; language: en; audio conditions: light_background_noise
+what to say: say: hello? | after opening: i&#x27;m busy making dinner right now. | if callback is offered: maybe. what would you be calling about? | if asked for a time before consent: i didn&#x27;t say i wanted another call yet. | if given a concise reason: okay, call tomorrow afternoon.
+observed: 1 of 3 stored attempts.">
+ <div class="issue-title"><h2>QA-010 — Incomplete or errored call evidence</h2></div>
+ <div class="field"><div class="label">ID / title</div><div class="value">QA-010 — Incomplete or errored call evidence</div></div>
+ <div class="field"><div class="label">Category</div><div class="value">infrastructure</div></div>
+ <div class="field"><div class="label">Severity</div><div class="value"><span class="badge high">High</span></div></div>
+ <div class="field"><div class="label">Recording + timestamp</div><div class="value"><span class="recording"><a href="https://yttepezqrpixdjkwpcgh.supabase.co/storage/v1/object/public/recordings/recordings/test-0f2b26be-ab35-4e4a-92e7-d42ac3e9651b.ogg" target="_blank" rel="noreferrer">Open recording</a> at 00:41 · callback_vague_later_001</span></div></div>
+ <div class="field"><div class="label">What happened</div><div class="value">tts_error: livekit.agents.inference.tts.TTS; tts_error: livekit.agents.inference.tts.TTS</div></div>
+ <div class="field"><div class="label">What should have happened</div><div class="value">Capture both sides of the call without runtime or scoring errors.</div></div>
+ <div class="field"><div class="label">How to reproduce</div><div class="value">Member says they are busy without explicitly requesting a callback
+Persona: age band: 30-50; demeanor: distracted; language: en; audio conditions: light_background_noise
+What to say: say: Hello? | after opening: I&#x27;m busy making dinner right now. | if callback is offered: Maybe. What would you be calling about? | if asked for a time before consent: I didn&#x27;t say I wanted another call yet. | if given a concise reason: Okay, call tomorrow afternoon.
+Observed: 1 of 3 stored attempts.</div></div>
+</article>
+<article class="issue" data-severity="high" data-category="infrastructure" data-search="qa-011 incomplete or errored call evidence infrastructure high {&#x27;type&#x27;: &#x27;tts_error&#x27;, &#x27;timestamp&#x27;: 1791590651.3708572, &#x27;label&#x27;: &#x27;livekit.agents.inference.tts.tts&#x27;, &#x27;recoverable&#x27;: true}; {&#x27;type&#x27;: &#x27;tts_error&#x27;, &#x27;timestamp&#x27;: 1791590651.5497985, &#x27;label&#x27;: &#x27;livekit.agents.inference.tts.tts&#x27;, &#x27;recoverable&#x27;: true}; {&#x27;type&#x27;: &#x27;tts_error&#x27;, &#x27;timestamp&#x27;: 1791590653.6264305, &#x27;label&#x27;: &#x27;livekit.agents.inference.tts.tts&#x27;, &#x27;recoverable&#x27;: true} capture both sides of the call without runtime or scoring errors. member directly asks not to be called again
+persona: age band: 30-50; demeanor: firm; language: en; audio conditions: clean
+what to say: say: hello? | after opening: please take me off your list. do not call me again. | if agent continues: no. i am asking you to stop calling this number.
+observed: 1 of 4 stored attempts.">
+ <div class="issue-title"><h2>QA-011 — Incomplete or errored call evidence</h2></div>
+ <div class="field"><div class="label">ID / title</div><div class="value">QA-011 — Incomplete or errored call evidence</div></div>
+ <div class="field"><div class="label">Category</div><div class="value">infrastructure</div></div>
+ <div class="field"><div class="label">Severity</div><div class="value"><span class="badge high">High</span></div></div>
+ <div class="field"><div class="label">Recording + timestamp</div><div class="value"><span class="recording">Recording unavailable · 00:47 · preference_do_not_call_001</span></div></div>
+ <div class="field"><div class="label">What happened</div><div class="value">{&#x27;type&#x27;: &#x27;tts_error&#x27;, &#x27;timestamp&#x27;: 1791590651.3708572, &#x27;label&#x27;: &#x27;livekit.agents.inference.tts.TTS&#x27;, &#x27;recoverable&#x27;: True}; {&#x27;type&#x27;: &#x27;tts_error&#x27;, &#x27;timestamp&#x27;: 1791590651.5497985, &#x27;label&#x27;: &#x27;livekit.agents.inference.tts.TTS&#x27;, &#x27;recoverable&#x27;: True}; {&#x27;type&#x27;: &#x27;tts_error&#x27;, &#x27;timestamp&#x27;: 1791590653.6264305, &#x27;label&#x27;: &#x27;livekit.agents.inference.tts.TTS&#x27;, &#x27;recoverable&#x27;: True}</div></div>
+ <div class="field"><div class="label">What should have happened</div><div class="value">Capture both sides of the call without runtime or scoring errors.</div></div>
+ <div class="field"><div class="label">How to reproduce</div><div class="value">Member directly asks not to be called again
+Persona: age band: 30-50; demeanor: firm; language: en; audio conditions: clean
+What to say: say: Hello? | after opening: Please take me off your list. Do not call me again. | if agent continues: No. I am asking you to stop calling this number.
+Observed: 1 of 4 stored attempts.</div></div>
+</article>
+<article class="issue" data-severity="high" data-category="infrastructure" data-search="qa-012 incomplete or errored call evidence infrastructure high no wedge-agent utterance was captured.; no simulated-caller utterance was captured. capture both sides of the call without runtime or scoring errors. family member answers and asks why the agent is calling
+persona: age band: 40-60; demeanor: helpful_but_persistent; language: en; audio conditions: clean
+what to say: say: hello? | when member is requested: i&#x27;m her daughter. she isn&#x27;t here right now. what is this about? | if asked to get member: i handle all her paperwork. you can tell me. | if pressed for identity: can you at least say whether this is about her insurance? | do not claim: do not claim to be the named member or an authorized representative.
+observed: 1 of 4 stored attempts.">
+ <div class="issue-title"><h2>QA-012 — Incomplete or errored call evidence</h2></div>
+ <div class="field"><div class="label">ID / title</div><div class="value">QA-012 — Incomplete or errored call evidence</div></div>
+ <div class="field"><div class="label">Category</div><div class="value">infrastructure</div></div>
+ <div class="field"><div class="label">Severity</div><div class="value"><span class="badge high">High</span></div></div>
+ <div class="field"><div class="label">Recording + timestamp</div><div class="value"><span class="recording">Recording unavailable · 00:00 · identity_wrong_party_001</span></div></div>
+ <div class="field"><div class="label">What happened</div><div class="value">No Wedge-agent utterance was captured.; No simulated-caller utterance was captured.</div></div>
+ <div class="field"><div class="label">What should have happened</div><div class="value">Capture both sides of the call without runtime or scoring errors.</div></div>
+ <div class="field"><div class="label">How to reproduce</div><div class="value">Family member answers and asks why the agent is calling
+Persona: age band: 40-60; demeanor: helpful_but_persistent; language: en; audio conditions: clean
+What to say: say: Hello? | when member is requested: I&#x27;m her daughter. She isn&#x27;t here right now. What is this about? | if asked to get member: I handle all her paperwork. You can tell me. | if pressed for identity: Can you at least say whether this is about her insurance? | do not claim: Do not claim to be the named member or an authorized representative.
+Observed: 1 of 4 stored attempts.</div></div>
+</article>
+<article class="issue" data-severity="high" data-category="workflow_disposition" data-search="qa-013 text preference converted into callback workflow_disposition high agent asked for a callback time despite caller&#x27;s clear request for text only, indicating conversion to callback preference.
+
+agent asked for a callback time despite caller&#x27;s clear request for text only, indicating conversion to callback preference. evidence: &quot;no problem at all — what day and time is better to call you back?&quot; text preference not converted to callback member requests text contact instead of callback
+persona: age band: 25-50; demeanor: cooperative; language: en; audio conditions: clean
+what to say: say: i cannot talk. please text me the information instead. | if callback offered: no phone callback, just a text if that is available.
+observed: 1 of 1 stored attempt.">
+ <div class="issue-title"><h2>QA-013 — Text preference converted into callback</h2></div>
+ <div class="field"><div class="label">ID / title</div><div class="value">QA-013 — Text preference converted into callback</div></div>
+ <div class="field"><div class="label">Category</div><div class="value">workflow disposition</div></div>
+ <div class="field"><div class="label">Severity</div><div class="value"><span class="badge high">High</span></div></div>
+ <div class="field"><div class="label">Recording + timestamp</div><div class="value"><span class="recording"><a href="https://yttepezqrpixdjkwpcgh.supabase.co/storage/v1/object/public/recordings/recordings/test-2f580ee5-7a36-4f1b-84fb-781af87c56ff.ogg" target="_blank" rel="noreferrer">Open recording</a> at 00:23 · matrix_callback_text_only_005</span></div></div>
+ <div class="field"><div class="label">What happened</div><div class="value">Agent asked for a callback time despite caller&#x27;s clear request for text only, indicating conversion to callback preference.
+
+Agent asked for a callback time despite caller&#x27;s clear request for text only, indicating conversion to callback preference. Evidence: &quot;No problem at all — what day and time is better to call you back?&quot;</div></div>
+ <div class="field"><div class="label">What should have happened</div><div class="value">text preference not converted to callback</div></div>
+ <div class="field"><div class="label">How to reproduce</div><div class="value">Member requests text contact instead of callback
+Persona: age band: 25-50; demeanor: cooperative; language: en; audio conditions: clean
+What to say: say: I cannot talk. Please text me the information instead. | if callback offered: No phone callback, just a text if that is available.
+Observed: 1 of 1 stored attempt.</div></div>
+</article>
+<article class="issue" data-severity="medium" data-category="audio_recognition_recovery" data-search="qa-014 agent mishears noisy caller without proactively clarifying audio_recognition_recovery medium under steady background noise, the agent misheard the caller more than once and continued until the caller explicitly challenged it and asked what it had heard.
+
+at 00:19 the caller audio was transcribed incorrectly; at 00:43 the agent repeated the corrupted phrase instead of having proactively asked for clarification. acknowledge low audio confidence, ask the caller to repeat unclear speech, and confirm the critical renewal fact before continuing. background noise obscures an important renewal response
+persona: age band: 45-70; demeanor: cooperative_but_mildly_frustrated; language: en; audio conditions: steady_cafe_or_traffic_noise
+what to say: say: hi, yes, this is james. | when background noise is audible: sorry, it is noisy here. i already completed my renewal online yesterday. | if agent misunderstands: that is not what i said. can you repeat back what you heard? | after repair: please give me one instruction at a time.
+observed: 1 of 1 stored attempt.">
+ <div class="issue-title"><h2>QA-014 — Agent mishears noisy caller without proactively clarifying</h2></div>
+ <div class="field"><div class="label">ID / title</div><div class="value">QA-014 — Agent mishears noisy caller without proactively clarifying</div></div>
+ <div class="field"><div class="label">Category</div><div class="value">audio recognition recovery</div></div>
+ <div class="field"><div class="label">Severity</div><div class="value"><span class="badge medium">Medium</span></div></div>
+ <div class="field"><div class="label">Recording + timestamp</div><div class="value"><span class="recording"><a href="https://yttepezqrpixdjkwpcgh.supabase.co/storage/v1/object/public/recordings/recordings/test-ce503bc0-7e24-4ea7-9887-c0aed39de161.ogg" target="_blank" rel="noreferrer">Open recording</a> at 00:43 · manual_audio_background_noise_001</span></div></div>
+ <div class="field"><div class="label">What happened</div><div class="value">Under steady background noise, the agent misheard the caller more than once and continued until the caller explicitly challenged it and asked what it had heard.
+
+At 00:19 the caller audio was transcribed incorrectly; at 00:43 the agent repeated the corrupted phrase instead of having proactively asked for clarification.</div></div>
+ <div class="field"><div class="label">What should have happened</div><div class="value">Acknowledge low audio confidence, ask the caller to repeat unclear speech, and confirm the critical renewal fact before continuing.</div></div>
+ <div class="field"><div class="label">How to reproduce</div><div class="value">Background noise obscures an important renewal response
+Persona: age band: 45-70; demeanor: cooperative_but_mildly_frustrated; language: en; audio conditions: steady_cafe_or_traffic_noise
+What to say: say: Hi, yes, this is James. | when background noise is audible: Sorry, it is noisy here. I already completed my renewal online yesterday. | if agent misunderstands: That is not what I said. Can you repeat back what you heard? | after repair: Please give me one instruction at a time.
+Observed: 1 of 1 stored attempt.</div></div>
+</article></section>
+ <p class="review-note">Generated 2026-10-13T15:45:14.015071+00:00. Critical/high automated findings require human validation against the linked recording.</p>
+</main>
+<script>
+const controls = ['search','severity','category'].map(id => document.getElementById(id));
+const cards = [...document.querySelectorAll('.issue')];
+function applyFilters() {
+ const query=controls[0].value.trim().toLowerCase(); let visible=0;
+ for (const card of cards) {
+  const show=(!query||card.dataset.search.includes(query))&&(!controls[1].value||card.dataset.severity===controls[1].value)&&(!controls[2].value||card.dataset.category===controls[2].value);
+  card.hidden=!show; if(show) visible++;
+ }
+ document.getElementById('visible-count').textContent=`${visible} of ${cards.length} errors shown`;
+}
+controls.forEach(control=>control.addEventListener('input',applyFilters)); applyFilters();
+</script>
+</body></html>

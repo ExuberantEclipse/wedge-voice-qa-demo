@@ -1,0 +1,15 @@
+id: matrix_callback_already_resolved_008
+version: 1
+title: Member says issue is resolved and rejects follow-up
+priority: high
+portal_language: en
+persona: {age_band: 35-65, language: en, demeanor: confident, audio_conditions: clean}
+caller_policy:
+  - say: "I already completed my renewal, so I do not need a callback."
+  - if_callback_offered: "No follow-up call is needed."
+expected:
+  invariants: [resolved_status_acknowledged, no_unnecessary_callback, no_pressure_to_accept_followup]
+  acceptable_outcomes: [already_resolved_disposition]
+stop_conditions: [The agent records the issue as resolved and ends.]
+max_duration_seconds: 120
+tags: [matrix, callback, resolved]

@@ -1,0 +1,28 @@
+id: callback_vague_later_001
+version: 1
+title: Member says they are busy without explicitly requesting a callback
+priority: high
+persona:
+  age_band: 30-50
+  language: en
+  demeanor: distracted
+  audio_conditions: light_background_noise
+caller_policy:
+  - say: "Hello?"
+  - after_opening: "I'm busy making dinner right now."
+  - if_callback_is_offered: "Maybe. What would you be calling about?"
+  - if_asked_for_a_time_before_consent: "I didn't say I wanted another call yet."
+  - if_given_a_concise_reason: "Okay, call tomorrow afternoon."
+expected:
+  invariants:
+    - no_callback_before_explicit_consent
+    - callback_window_confirmed
+    - correct_callback_disposition
+  acceptable_outcomes:
+    - callback_confirmed_for_tomorrow_afternoon
+stop_conditions:
+  - The callback window is confirmed.
+  - The agent creates a callback before explicit consent.
+max_duration_seconds: 240
+tags: [callback, intent, disposition]
+

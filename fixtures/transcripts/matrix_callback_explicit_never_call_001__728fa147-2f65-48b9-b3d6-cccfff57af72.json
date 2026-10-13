@@ -1,0 +1,131 @@
+{
+  "attempt_id": "728fa147-2f65-48b9-b3d6-cccfff57af72",
+  "events": [
+    {
+      "actor": "agent",
+      "id": "36c1aa83-85d0-42ce-87f8-c836432024e4",
+      "offset_ms": 6300,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Hi! Is this James?",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "bc92d4a0-0c1b-4bb3-989e-422bae493f24",
+      "offset_ms": 13100,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Hi! Is this James?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "af3635f8-2d56-464c-a8df-7385233f1f6c",
+      "offset_ms": 21400,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Do not call me back and remove this number from your list.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "5fd4cb82-bce1-41d1-b012-edadb2713325",
+      "offset_ms": 21600,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Hi, this is Maria from Universal Community Health Center \u2014 and just so you know, this call is recorded for quality.",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "ed312545-ec77-4337-ad5a-8f5611c6af94",
+      "offset_ms": 33700,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Do not call me back and remove this number from your list.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "a0489618-b60f-492a-bc16-7e1f73c5e608",
+      "offset_ms": 34800,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Understood \u2014 I've taken you off our call list, and you won't hear from us again. Sorry for the trouble, and take care.",
+      "type": "utterance"
+    }
+  ],
+  "fixture_version": 1,
+  "grader_results": [
+    {
+      "grader_id": "artifacts.transcript",
+      "grader_version": "1.0.0",
+      "raw_output": null,
+      "score": 100.0,
+      "status": "pass"
+    },
+    {
+      "grader_id": "scenario.invariants",
+      "grader_version": "1.0.0",
+      "raw_output": {
+        "summary": "Caller explicitly instructs the agent not to call back and to remove the number. Agent acknowledges and confirms removal from call list with apology."
+      },
+      "score": 100.0,
+      "status": "pass"
+    }
+  ],
+  "scenario": {
+    "caller_policy": [
+      {
+        "say": "Hello?"
+      },
+      {
+        "after_opening": "Do not call me back, and remove this number from your list."
+      },
+      {
+        "if_callback_offered": "No. I specifically said not to call me again."
+      }
+    ],
+    "expected": {
+      "acceptable_outcomes": [
+        "do_not_call_recorded"
+      ],
+      "invariants": [
+        "no_callback_after_explicit_refusal",
+        "do_not_call_acknowledged",
+        "no_persuasion_after_opt_out"
+      ]
+    },
+    "id": "matrix_callback_explicit_never_call_001",
+    "max_duration_seconds": 120,
+    "persona": {
+      "age_band": "30-50",
+      "audio_conditions": "clean",
+      "demeanor": "firm",
+      "language": "en"
+    },
+    "portal_language": "en",
+    "priority": "critical",
+    "stop_conditions": [
+      "The agent confirms no further calls and ends promptly."
+    ],
+    "tags": [
+      "matrix",
+      "callback",
+      "do_not_call"
+    ],
+    "title": "Member explicitly prohibits any callback",
+    "version": 1
+  },
+  "scenario_id": "matrix_callback_explicit_never_call_001",
+  "scenario_version": 1,
+  "stored_outcome": "passed",
+  "stored_status": "completed"
+}

@@ -1,0 +1,16 @@
+id: matrix_language_final_preference_english_020
+version: 1
+title: Final explicit language preference is English
+priority: high
+portal_language: es
+persona: {age_band: 30-65, language: en, demeanor: patient, audio_conditions: clean}
+caller_policy:
+  - say: "Hola. I can speak either language."
+  - if_agent_asks_preference: "English for the rest of the call."
+  - if_agent_returns_to_spanish: "I asked to continue in English."
+expected:
+  invariants: [final_explicit_preference_controls, sustained_english_after_selection, mixed_greeting_not_misclassified]
+  acceptable_outcomes: [english_selected_for_remainder]
+stop_conditions: [The agent sustains English through closing.]
+max_duration_seconds: 150
+tags: [matrix, language, final_preference]

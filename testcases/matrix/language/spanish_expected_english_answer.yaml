@@ -1,0 +1,16 @@
+id: matrix_language_spanish_expected_english_answer_011
+version: 1
+title: Agent expects Spanish but member answers in English
+priority: critical
+portal_language: es
+persona: {age_band: 30-55, language: en, demeanor: neutral, audio_conditions: clean}
+caller_policy:
+  - say: "Hello, this is James."
+  - if_agent_continues_in_spanish: "I prefer to speak English."
+  - after_switch: "Yes, English is correct."
+expected:
+  invariants: [english_answer_triggers_english_response, explicit_english_preference_honored, context_preserved_after_switch]
+  acceptable_outcomes: [conversation_continues_in_english]
+stop_conditions: [The agent continues clearly in English.]
+max_duration_seconds: 150
+tags: [matrix, language, expected_spanish, english]

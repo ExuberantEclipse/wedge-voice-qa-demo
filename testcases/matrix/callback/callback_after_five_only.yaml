@@ -1,0 +1,16 @@
+id: matrix_callback_after_five_only_006
+version: 1
+title: Member allows callback only after five PM
+priority: high
+portal_language: en
+persona: {age_band: 30-55, language: en, demeanor: precise, audio_conditions: clean}
+caller_policy:
+  - say: "I can take a callback, but only after five PM."
+  - if_earlier_time_offered: "No, after five only."
+  - after_correct_confirmation: "Yes, that works."
+expected:
+  invariants: [callback_time_constraint_preserved, no_earlier_callback_confirmed, explicit_time_confirmation]
+  acceptable_outcomes: [callback_after_five_scheduled]
+stop_conditions: [The agent accurately confirms a callback after five PM.]
+max_duration_seconds: 120
+tags: [matrix, callback, time_constraint]

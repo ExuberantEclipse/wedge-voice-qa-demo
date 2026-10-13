@@ -1,0 +1,15 @@
+id: matrix_language_bilingual_prefers_english_017
+version: 1
+title: Bilingual member understands Spanish but prefers English
+priority: high
+portal_language: es
+persona: {age_band: 35-65, language: en, demeanor: polite, audio_conditions: clean}
+caller_policy:
+  - say: "I understand Spanish, but English is easier for me."
+  - if_agent_offers_spanish: "English, please."
+expected:
+  invariants: [preference_not_confused_with_ability, english_selected, no_reversion_to_spanish]
+  acceptable_outcomes: [english_preference_used]
+stop_conditions: [The agent speaks English for the remainder.]
+max_duration_seconds: 120
+tags: [matrix, language, bilingual_preference]

@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/wedge/voice-qa-scenario.schema.json",
+  "title": "Voice QA scenario",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "version",
+    "title",
+    "priority",
+    "persona",
+    "caller_policy",
+    "expected"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{2,79}$"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "priority": {
+      "enum": ["critical", "high", "medium", "low"]
+    },
+    "portal_language": {
+      "description": "Language configured for the Wedge agent; may intentionally differ from the caller language.",
+      "enum": ["en", "es"]
+    },
+    "persona": {
+      "type": "object",
+      "required": ["language", "demeanor"],
+      "properties": {
+        "age_band": {"type": "string"},
+        "language": {"enum": ["en", "es", "mixed", "unsupported"]},
+        "demeanor": {"type": "string"},
+        "audio_conditions": {"type": "string"}
+      },
+      "additionalProperties": true
+    },
+    "caller_policy": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "minProperties": 1,
+        "maxProperties": 1
+      }
+    },
+    "expected": {
+      "type": "object",
+      "required": ["invariants"],
+      "properties": {
+        "invariants": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "acceptable_outcomes": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      },
+      "additionalProperties": false
+    },
+    "stop_conditions": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "max_duration_seconds": {
+      "type": "integer",
+      "minimum": 30,
+      "maximum": 900
+    },
+    "tags": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    }
+  }
+}
+

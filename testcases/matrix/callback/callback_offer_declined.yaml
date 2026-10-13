@@ -1,0 +1,16 @@
+id: matrix_callback_offer_declined_003
+version: 1
+title: Member clearly declines an offered callback
+priority: critical
+portal_language: en
+persona: {age_band: 40-65, language: en, demeanor: polite, audio_conditions: clean}
+caller_policy:
+  - say: "I only have a few seconds."
+  - if_callback_offered: "No thank you, please do not call back."
+  - if_agent_confirms: "That is correct. Goodbye."
+expected:
+  invariants: [declined_callback_not_scheduled, refusal_acknowledged_immediately, no_second_callback_offer]
+  acceptable_outcomes: [callback_declined]
+stop_conditions: [The agent confirms no callback and ends.]
+max_duration_seconds: 120
+tags: [matrix, callback, refusal]

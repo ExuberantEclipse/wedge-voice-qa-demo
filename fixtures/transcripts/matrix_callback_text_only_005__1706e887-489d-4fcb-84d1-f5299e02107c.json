@@ -1,0 +1,128 @@
+{
+  "attempt_id": "1706e887-489d-4fcb-84d1-f5299e02107c",
+  "events": [
+    {
+      "actor": "agent",
+      "id": "41351cab-2adb-4397-9cb7-db68956b5889",
+      "offset_ms": 7500,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Hi! Is this James?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "f7d7e5e5-d99c-49b5-a8c6-ed2947bd435a",
+      "offset_ms": 16100,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "I cannot talk. Please text me the information instead.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "592dedf3-9cfb-4fe6-a114-8ae81070a606",
+      "offset_ms": 16300,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Hi, this is Maria from Universal Community Health Center \u2014 and just so you know, this call is recorded for quality.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "02c054a5-f80a-4257-a259-7a8c55d6ea32",
+      "offset_ms": 23300,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "No problem at all \u2014 what day and time is better to call you back?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "d8fb28e8-2bae-435e-9c70-c7ab3de02307",
+      "offset_ms": 32600,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "No phone callback. Just a text if that is available.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "cb96bff3-8a01-4b4d-b7cb-8e4d0975850d",
+      "offset_ms": 39000,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "No problem at all \u2014 we'll try you again another time. Thanks, and take care!",
+      "type": "utterance"
+    }
+  ],
+  "fixture_version": 1,
+  "grader_results": [
+    {
+      "grader_id": "artifacts.transcript",
+      "grader_version": "1.0.0",
+      "raw_output": null,
+      "score": 100.0,
+      "status": "pass"
+    },
+    {
+      "grader_id": "scenario.invariants",
+      "grader_version": "1.0.0",
+      "raw_output": {
+        "summary": "The caller requested information via text only, explicitly declining a callback. The agent acknowledged the request but asked for a callback time. Upon the caller's reiteration of no phone callback and preference for text, the agent responded that they will try again another time without confirming text follow-up explicitly."
+      },
+      "score": 33.33,
+      "status": "fail"
+    }
+  ],
+  "scenario": {
+    "caller_policy": [
+      {
+        "say": "I cannot talk. Please text me the information instead."
+      },
+      {
+        "if_callback_offered": "No phone callback, just a text if that is available."
+      }
+    ],
+    "expected": {
+      "acceptable_outcomes": [
+        "text_followup_or_no_followup"
+      ],
+      "invariants": [
+        "text_preference_not_converted_to_callback",
+        "no_callback_without_consent",
+        "channel_preference_acknowledged"
+      ]
+    },
+    "id": "matrix_callback_text_only_005",
+    "max_duration_seconds": 120,
+    "persona": {
+      "age_band": "25-50",
+      "audio_conditions": "clean",
+      "demeanor": "cooperative",
+      "language": "en"
+    },
+    "portal_language": "en",
+    "priority": "high",
+    "stop_conditions": [
+      "The agent acknowledges the channel preference and ends."
+    ],
+    "tags": [
+      "matrix",
+      "callback",
+      "channel_preference"
+    ],
+    "title": "Member requests text contact instead of callback",
+    "version": 1
+  },
+  "scenario_id": "matrix_callback_text_only_005",
+  "scenario_version": 1,
+  "stored_outcome": "failed_checks",
+  "stored_status": "completed"
+}

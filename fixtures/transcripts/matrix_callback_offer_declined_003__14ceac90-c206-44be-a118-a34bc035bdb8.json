@@ -1,0 +1,151 @@
+{
+  "attempt_id": "14ceac90-c206-44be-a118-a34bc035bdb8",
+  "events": [
+    {
+      "actor": "agent",
+      "id": "188affd1-b6e7-4d0e-830c-2136a1f1a6a0",
+      "offset_ms": 6600,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Hi! Is this James?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "432d0d18-f124-4e21-b881-f4b43a8a9864",
+      "offset_ms": 14600,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "I only have a few seconds.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "d81c2132-d1ca-483a-ae70-b846876d4397",
+      "offset_ms": 14800,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Hi, this is Maria from Universal Community Health Center \u2014 and just so you know, this call is recorded for quality.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "85a0535e-cc22-499b-9f0c-95832c61094c",
+      "offset_ms": 22100,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "I'm doing well, thanks for asking. So \u2014 I'm calling about your Medi-Cal coverage. Can I ask you a couple quick questions?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "f5b5a221-a9dc-483e-8413-f47fa5b0cebf",
+      "offset_ms": 34100,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "I only have a few seconds.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "bbf0b8d6-bbe2-4a1b-976f-e5a224e19650",
+      "offset_ms": 35000,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "No problem at all \u2014 what day and time is better to call you back?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "8ff09846-7c23-4dbf-95c0-822f8a427ea5",
+      "offset_ms": 43100,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "No. Thank you. Please do not call back.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "49a75b66-2a26-4ff9-8edb-14d42840eae0",
+      "offset_ms": 49100,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Understood \u2014 I've taken you off our call list, and you won't hear from us again. Sorry for the trouble, and take care.",
+      "type": "utterance"
+    }
+  ],
+  "fixture_version": 1,
+  "grader_results": [
+    {
+      "grader_id": "artifacts.transcript",
+      "grader_version": "1.0.0",
+      "raw_output": null,
+      "score": 100.0,
+      "status": "pass"
+    },
+    {
+      "grader_id": "scenario.invariants",
+      "grader_version": "1.0.0",
+      "raw_output": {
+        "summary": "Agent offers callback, caller explicitly declines the callback and requests no further calls, agent acknowledges refusal and confirms removal from call list without offering another callback."
+      },
+      "score": 100.0,
+      "status": "pass"
+    }
+  ],
+  "scenario": {
+    "caller_policy": [
+      {
+        "say": "I only have a few seconds."
+      },
+      {
+        "if_callback_offered": "No thank you, please do not call back."
+      },
+      {
+        "if_agent_confirms": "That is correct. Goodbye."
+      }
+    ],
+    "expected": {
+      "acceptable_outcomes": [
+        "callback_declined"
+      ],
+      "invariants": [
+        "declined_callback_not_scheduled",
+        "refusal_acknowledged_immediately",
+        "no_second_callback_offer"
+      ]
+    },
+    "id": "matrix_callback_offer_declined_003",
+    "max_duration_seconds": 120,
+    "persona": {
+      "age_band": "40-65",
+      "audio_conditions": "clean",
+      "demeanor": "polite",
+      "language": "en"
+    },
+    "portal_language": "en",
+    "priority": "critical",
+    "stop_conditions": [
+      "The agent confirms no callback and ends."
+    ],
+    "tags": [
+      "matrix",
+      "callback",
+      "refusal"
+    ],
+    "title": "Member clearly declines an offered callback",
+    "version": 1
+  },
+  "scenario_id": "matrix_callback_offer_declined_003",
+  "scenario_version": 1,
+  "stored_outcome": "passed",
+  "stored_status": "completed"
+}

@@ -1,0 +1,228 @@
+{
+  "attempt_id": "5edb1eb9-999d-4848-9c2f-97afc5a50206",
+  "events": [
+    {
+      "actor": "agent",
+      "id": "b4c9597e-b150-48fd-acf1-73bf2c988f36",
+      "offset_ms": 6100,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Hi! Is this James?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "0c660162-8839-41d7-bb4c-398454083954",
+      "offset_ms": 13500,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Yes. This is James.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "50471ae5-0218-4eae-8b21-500f0607f5b4",
+      "offset_ms": 13700,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Great, thanks! This is Maria from Universal Community Health Center \u2014 and just so you know, this call is recorded for quality. How are you doing today?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "0d48ef43-3a4b-4990-a9e3-9172d72a2965",
+      "offset_ms": 29900,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "I'm doing well. Thanks. I already completed my renewal, so I do not need a callback.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "5f58cf69-51cb-441a-8eb5-9a7a57f86e4f",
+      "offset_ms": 30800,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "So \u2014 I'm calling about your Medi-Cal coverage. Can I ask you a couple quick questions?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "1caba1b6-72e1-45a3-ac7a-14f3d53d0d52",
+      "offset_ms": 42100,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Like I said, I already completed my renewal, so I don't need a callback.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "b1b08365-373e-4f20-810e-c2ea5b137bf1",
+      "offset_ms": 42600,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "I understand, James. Our records show you're still on Medi-Cal. Is that right?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "1c6a1be9-a6fe-4411-99e1-4e6f1f2c77b9",
+      "offset_ms": 51100,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Yes. That's right.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "627a9ffe-98b1-4b27-830a-4361bcf16cae",
+      "offset_ms": 52900,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "And are you planning to keep Universal Community Health Center as your Medi-Cal primary care \u2014 your main doctor's office?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "eba47eff-4eeb-4c5a-804c-6450a720da87",
+      "offset_ms": 62300,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Yes. I",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "95c350b4-36bf-409a-969b-d3a077a69aff",
+      "offset_ms": 62400,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Medi-Cal is",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "a3adac21-9afa-4753-95ca-f2a9fc89d15a",
+      "offset_ms": 65300,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Yes. That's correct.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "46d60bb8-e87e-4f0d-acfc-f386c6e05248",
+      "offset_ms": 68500,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Have you moved in the last year or two? The county might have your old address.",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "82e6160c-2935-4a56-9288-d1a325489ea9",
+      "offset_ms": 68500,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Yes.",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "196a141c-0d3b-487c-8072-7a1d72ba6289",
+      "offset_ms": 77400,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "No. I haven't moved.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "b2158a7e-3b74-4b5b-920e-53dee22cbfd6",
+      "offset_ms": 84000,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Thanks for confirming, James. We'll text you a number to call for free help right after this. Keep an eye out for that yellow envelope, and don't set it aside. Take care!",
+      "type": "utterance"
+    }
+  ],
+  "fixture_version": 1,
+  "grader_results": [
+    {
+      "grader_id": "artifacts.transcript",
+      "grader_version": "1.0.0",
+      "raw_output": null,
+      "score": 100.0,
+      "status": "pass"
+    },
+    {
+      "grader_id": "scenario.invariants",
+      "grader_version": "1.0.0",
+      "raw_output": {
+        "summary": "Member states they have completed their renewal and do not need a callback. Agent acknowledges this and confirms member's Medi-Cal status and primary care provider, asks about address update, then informs member they will receive a text with a contact number for free help."
+      },
+      "score": 100.0,
+      "status": "pass"
+    }
+  ],
+  "scenario": {
+    "caller_policy": [
+      {
+        "say": "I already completed my renewal, so I do not need a callback."
+      },
+      {
+        "if_callback_offered": "No follow-up call is needed."
+      }
+    ],
+    "expected": {
+      "acceptable_outcomes": [
+        "already_resolved_disposition"
+      ],
+      "invariants": [
+        "resolved_status_acknowledged",
+        "no_unnecessary_callback",
+        "no_pressure_to_accept_followup"
+      ]
+    },
+    "id": "matrix_callback_already_resolved_008",
+    "max_duration_seconds": 120,
+    "persona": {
+      "age_band": "35-65",
+      "audio_conditions": "clean",
+      "demeanor": "confident",
+      "language": "en"
+    },
+    "portal_language": "en",
+    "priority": "high",
+    "stop_conditions": [
+      "The agent records the issue as resolved and ends."
+    ],
+    "tags": [
+      "matrix",
+      "callback",
+      "resolved"
+    ],
+    "title": "Member says issue is resolved and rejects follow-up",
+    "version": 1
+  },
+  "scenario_id": "matrix_callback_already_resolved_008",
+  "scenario_version": 1,
+  "stored_outcome": "passed",
+  "stored_status": "completed"
+}

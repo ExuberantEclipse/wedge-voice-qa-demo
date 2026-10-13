@@ -1,0 +1,198 @@
+{
+  "attempt_id": "4e664178-84b4-4558-a7c6-1f8287331b47",
+  "events": [
+    {
+      "actor": "agent",
+      "id": "42239a53-fd2b-4c8e-96ce-3f959e72aa56",
+      "offset_ms": 6200,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Hi! Is this James?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "47b170e5-d0a3-48c0-bda1-84d3c73f8c33",
+      "offset_ms": 13100,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Yes. This is he.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "c379c12a-8bf5-4d91-9f4d-b9f449915629",
+      "offset_ms": 13300,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Great, thanks! This is Maria from Universal Community Health Center \u2014 and just so you know, this call is recorded for quality. How are you doing today?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "5d331813-a95c-4a57-ba26-8b46f60c9b66",
+      "offset_ms": 25700,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "I'm doing alright. Thank you.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "f2447c50-f5ba-423e-9529-b8f323f2dd29",
+      "offset_ms": 25800,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "I'm glad to hear that, James. So \u2014 I'm calling about your Medi-Cal coverage. Can I ask you a couple quick questions?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "183cf0f5-442e-4629-8819-936c988e833a",
+      "offset_ms": 36500,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "I suppose so.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "980975de-de6c-473b-a32f-6df4d4566934",
+      "offset_ms": 37300,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Thanks, James. Our records show you're still on Medi-Cal. Is that right?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "befe461e-3857-415b-8db0-418ce24afa07",
+      "offset_ms": 45300,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Yes. That's correct.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "0f65bc61-3dbc-438a-87be-9927ffed5801",
+      "offset_ms": 46800,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "And are you planning to keep Universal Community Health Center as your Medi-Cal primary care \u2014 your main doctor's office?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "39f954c0-b438-48fc-8f99-7a60dedb9304",
+      "offset_ms": 56900,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Yes.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "ec8e283d-e693-4e1d-8f90-650ee9611382",
+      "offset_ms": 58400,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Medi-Cal is checking everyone's coverage this year. You'll get a renewal packet in the mail from the county \u2014 usually a yellow envelope, and it has a due date on it. Please don't set it aside. If you'd like help filling it out, we do that for free, over the phone or right at the clinic. Would you like me to arrange that help for you?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "966614f0-a33c-4aca-bfda-be214ec94baa",
+      "offset_ms": 84500,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "You may call once tomorrow at 10AM, but no other calls.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "a4ca4d1d-d8f9-4607-9e49-d746d56e3b01",
+      "offset_ms": 90800,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "No problem at all \u2014 we'll give you a call back then. Thanks, and take care!",
+      "type": "utterance"
+    }
+  ],
+  "fixture_version": 1,
+  "grader_results": [
+    {
+      "grader_id": "artifacts.transcript",
+      "grader_version": "1.0.0",
+      "raw_output": null,
+      "score": 100.0,
+      "status": "pass"
+    },
+    {
+      "grader_id": "scenario.invariants",
+      "grader_version": "1.0.0",
+      "raw_output": {
+        "summary": "The caller James consents to one specific callback only, scheduled for tomorrow at 10AM, with no further calls agreed upon."
+      },
+      "score": 100.0,
+      "status": "pass"
+    }
+  ],
+  "scenario": {
+    "caller_policy": [
+      {
+        "say": "You may call once tomorrow at ten AM, but no other calls."
+      },
+      {
+        "if_recurring_contact_implied": "I only consented to one call tomorrow at ten."
+      }
+    ],
+    "expected": {
+      "acceptable_outcomes": [
+        "one_time_callback_scheduled"
+      ],
+      "invariants": [
+        "single_callback_scope_preserved",
+        "exact_time_confirmed",
+        "no_recurring_contact_claimed"
+      ]
+    },
+    "id": "matrix_callback_one_time_only_010",
+    "max_duration_seconds": 120,
+    "persona": {
+      "age_band": "30-65",
+      "audio_conditions": "clean",
+      "demeanor": "careful",
+      "language": "en"
+    },
+    "portal_language": "en",
+    "priority": "high",
+    "stop_conditions": [
+      "The agent confirms exactly one callback tomorrow at ten AM."
+    ],
+    "tags": [
+      "matrix",
+      "callback",
+      "limited_consent"
+    ],
+    "title": "Member consents to one specific callback only",
+    "version": 1
+  },
+  "scenario_id": "matrix_callback_one_time_only_010",
+  "scenario_version": 1,
+  "stored_outcome": "passed",
+  "stored_status": "completed"
+}

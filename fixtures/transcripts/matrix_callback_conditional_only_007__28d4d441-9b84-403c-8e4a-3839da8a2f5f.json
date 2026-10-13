@@ -1,0 +1,259 @@
+{
+  "attempt_id": "28d4d441-9b84-403c-8e4a-3839da8a2f5f",
+  "events": [
+    {
+      "actor": "agent",
+      "id": "244367ff-fc0c-40e5-b5dd-2b4504ac0cbe",
+      "offset_ms": 6600,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Hi! Is this James?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "eacbfa91-44b8-4bc2-83e9-794c32e535f6",
+      "offset_ms": 12700,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Yes. It is.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "29ffcca8-7514-416f-8a34-b3c06a959d59",
+      "offset_ms": 12800,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Great, thanks! This is Maria from Universal Community Health Center \u2014 and just so you know, this call is recorded for quality. How are you doing today?",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "37298032-4d8c-4a68-88ae-918425f77c56",
+      "offset_ms": 25100,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Good to hear, James. So \u2014 I'm calling about your Medi-Cal coverage. Can I ask you a couple quick questions?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "dbdf2770-21a7-4581-9fba-50da27fc918c",
+      "offset_ms": 25100,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "I'm doing alright. Thank you.",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "5e7ef0dd-2ca7-4a59-baea-509398bd45c2",
+      "offset_ms": 35600,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Sure. Go ahead.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "015a562b-455e-4c6f-8b10-aee32445a4b4",
+      "offset_ms": 35700,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Our records show you're still on Medi-Cal. Is that right?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "a1ea989c-ce83-458d-83ce-73048b430e4c",
+      "offset_ms": 43400,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Yes. That's correct.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "7e48c2eb-b63d-4319-8194-bca0df606255",
+      "offset_ms": 44700,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "And are you planning to keep Universal Community Health Center as your Medi-Cal primary care \u2014 your main doctor's office?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "33b216ae-3bc1-4ccd-a0cf-bee1de10437f",
+      "offset_ms": 55200,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Yes. That's right.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "55cf5bea-5648-4041-9bea-c17185c8779a",
+      "offset_ms": 56800,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Medi-Cal is checking everyone's coverage this year. You'll get a renewal packet in the mail from the county \u2014 usually a yellow envelope, and it has a due date on it. Please don't set it aside. If you'd like help filling it out, we do that for free, over the phone or right at the clinic. Would you like me to arrange that help for you?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "9366712c-94fa-46d5-bb47-3cf4675a2a37",
+      "offset_ms": 83200,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "No. Thank you. But you can call me back if my renewal paperwork is actually still missing.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "e5f598af-d338-494d-863c-cb143a1939b2",
+      "offset_ms": 83300,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "No problem at all \u2014 what day and time is better to call you back?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "1b088586-5776-43a5-9000-38a463d0c94d",
+      "offset_ms": 91800,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "That is not what I agreed to.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "e8bf8f87-fa6a-4eda-8d43-0098b49d9c58",
+      "offset_ms": 91800,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Sorry for the misunderstanding. Just to clarify, would you prefer us to call you back only if your renewal paperwork is still missing, or would you like help with it now?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "21fe7b77-9ab1-4c37-a6bf-7ec57793e9c3",
+      "offset_ms": 107400,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Yes. Only call me back if the paperwork is still missing.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "61f45d0c-4e9a-42e5-a24a-6cebec68237b",
+      "offset_ms": 107500,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Got it. What day and time would work best for a callback if needed?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "d322d010-81fb-4b2a-aad6-24a8afb3d259",
+      "offset_ms": 118000,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "I don't have a specific time. Just check the paperwork first.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "5b8fd28f-adf0-43cf-8ed0-306aa327025c",
+      "offset_ms": 124700,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "No problem at all \u2014 we'll try you again another time. Thanks, and take care!",
+      "type": "utterance"
+    }
+  ],
+  "fixture_version": 1,
+  "grader_results": [
+    {
+      "grader_id": "artifacts.transcript",
+      "grader_version": "1.0.0",
+      "raw_output": null,
+      "score": 100.0,
+      "status": "pass"
+    },
+    {
+      "grader_id": "scenario.invariants",
+      "grader_version": "1.0.0",
+      "raw_output": {
+        "summary": "Agent interacted with caller James regarding Medi-Cal renewal paperwork and conditional callback consent. The caller consented to a callback only if the renewal paperwork was still missing, with no specific callback time given. Agent confirmed the condition and agreed to try again another time if needed."
+      },
+      "score": 100.0,
+      "status": "pass"
+    }
+  ],
+  "scenario": {
+    "caller_policy": [
+      {
+        "say": "Only call me back if my renewal paperwork is actually still missing."
+      },
+      {
+        "if_unconditional_callback_confirmed": "That is not what I agreed to."
+      }
+    ],
+    "expected": {
+      "acceptable_outcomes": [
+        "conditional_followup_recorded",
+        "no_callback_scheduled"
+      ],
+      "invariants": [
+        "conditional_consent_not_recorded_as_unconditional",
+        "condition_repeated_accurately",
+        "no_guaranteed_callback_without_condition"
+      ]
+    },
+    "id": "matrix_callback_conditional_only_007",
+    "max_duration_seconds": 150,
+    "persona": {
+      "age_band": "45-70",
+      "audio_conditions": "clean",
+      "demeanor": "cautious",
+      "language": "en"
+    },
+    "portal_language": "en",
+    "priority": "high",
+    "stop_conditions": [
+      "The agent accurately reflects the condition or schedules nothing."
+    ],
+    "tags": [
+      "matrix",
+      "callback",
+      "conditional_consent"
+    ],
+    "title": "Callback consent is conditional on unresolved paperwork",
+    "version": 1
+  },
+  "scenario_id": "matrix_callback_conditional_only_007",
+  "scenario_version": 1,
+  "stored_outcome": "passed",
+  "stored_status": "completed"
+}

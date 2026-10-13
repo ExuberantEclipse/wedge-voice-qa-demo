@@ -1,0 +1,141 @@
+{
+  "attempt_id": "135fcc59-a02b-4704-854f-bc8d28dd6ea5",
+  "events": [
+    {
+      "actor": "agent",
+      "id": "731cd069-699a-4ca5-8d62-7a5600c249c1",
+      "offset_ms": 6000,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Hi! Is this James?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "42b252bd-57b2-49aa-a8ed-8f95a8358d6c",
+      "offset_ms": 13800,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "You have the wrong number. James does not live here.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "80b56e62-8c44-4b03-a2c5-c85b3f1f7616",
+      "offset_ms": 14000,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Hi, this is Maria from Universal Community Health Center \u2014 and just so you know, this call is recorded for quality.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "420227a0-d4c6-4983-abc7-6391ba7ea143",
+      "offset_ms": 21000,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Sorry to bother you \u2014 I'm trying",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "36ab78d4-81a5-4645-95bf-dfb876ee2c7b",
+      "offset_ms": 26800,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Whatever.",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "f1093a11-12c9-4656-904a-579fdfef0fef",
+      "offset_ms": 31200,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Look. You have the wrong number.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "b15a4015-b681-455a-b457-caafeda4f896",
+      "offset_ms": 33000,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Sorry again for the mix-up \u2014 have a great day!",
+      "type": "utterance"
+    }
+  ],
+  "fixture_version": 1,
+  "grader_results": [
+    {
+      "grader_id": "artifacts.transcript",
+      "grader_version": "1.0.0",
+      "raw_output": null,
+      "score": 100.0,
+      "status": "pass"
+    },
+    {
+      "grader_id": "scenario.invariants",
+      "grader_version": "1.0.0",
+      "raw_output": {
+        "summary": "Caller states they have the wrong number multiple times and the agent apologizes and does not attempt a callback or disclose member details."
+      },
+      "score": 100.0,
+      "status": "pass"
+    }
+  ],
+  "scenario": {
+    "caller_policy": [
+      {
+        "say": "You have the wrong number. James does not live here."
+      },
+      {
+        "if_callback_offered": "Do not call this number again."
+      }
+    ],
+    "expected": {
+      "acceptable_outcomes": [
+        "wrong_number_removed"
+      ],
+      "invariants": [
+        "wrong_number_disposition_recorded",
+        "no_callback_to_wrong_number",
+        "no_member_details_disclosed"
+      ]
+    },
+    "id": "matrix_callback_wrong_number_009",
+    "max_duration_seconds": 120,
+    "persona": {
+      "age_band": "20-60",
+      "audio_conditions": "clean",
+      "demeanor": "annoyed",
+      "language": "en"
+    },
+    "portal_language": "en",
+    "priority": "critical",
+    "stop_conditions": [
+      "The agent apologizes",
+      "records wrong number",
+      "and ends."
+    ],
+    "tags": [
+      "matrix",
+      "callback",
+      "wrong_number",
+      "privacy"
+    ],
+    "title": "Wrong-number recipient prohibits callback",
+    "version": 1
+  },
+  "scenario_id": "matrix_callback_wrong_number_009",
+  "scenario_version": 1,
+  "stored_outcome": "passed",
+  "stored_status": "completed"
+}

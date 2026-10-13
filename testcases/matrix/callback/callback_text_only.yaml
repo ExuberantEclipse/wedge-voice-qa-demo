@@ -1,0 +1,15 @@
+id: matrix_callback_text_only_005
+version: 1
+title: Member requests text contact instead of callback
+priority: high
+portal_language: en
+persona: {age_band: 25-50, language: en, demeanor: cooperative, audio_conditions: clean}
+caller_policy:
+  - say: "I cannot talk. Please text me the information instead."
+  - if_callback_offered: "No phone callback, just a text if that is available."
+expected:
+  invariants: [text_preference_not_converted_to_callback, no_callback_without_consent, channel_preference_acknowledged]
+  acceptable_outcomes: [text_followup_or_no_followup]
+stop_conditions: [The agent acknowledges the channel preference and ends.]
+max_duration_seconds: 120
+tags: [matrix, callback, channel_preference]

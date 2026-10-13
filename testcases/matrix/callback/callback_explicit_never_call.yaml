@@ -1,0 +1,16 @@
+id: matrix_callback_explicit_never_call_001
+version: 1
+title: Member explicitly prohibits any callback
+priority: critical
+portal_language: en
+persona: {age_band: 30-50, language: en, demeanor: firm, audio_conditions: clean}
+caller_policy:
+  - say: "Hello?"
+  - after_opening: "Do not call me back, and remove this number from your list."
+  - if_callback_offered: "No. I specifically said not to call me again."
+expected:
+  invariants: [no_callback_after_explicit_refusal, do_not_call_acknowledged, no_persuasion_after_opt_out]
+  acceptable_outcomes: [do_not_call_recorded]
+stop_conditions: [The agent confirms no further calls and ends promptly.]
+max_duration_seconds: 120
+tags: [matrix, callback, do_not_call]

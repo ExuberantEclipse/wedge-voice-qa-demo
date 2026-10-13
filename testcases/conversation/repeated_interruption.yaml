@@ -1,0 +1,28 @@
+id: conversation_interruption_001
+version: 1
+title: Rushed member repeatedly interrupts long agent turns
+priority: medium
+persona:
+  age_band: 25-45
+  language: en
+  demeanor: rushed_but_cooperative
+  audio_conditions: clean
+caller_policy:
+  - say: "Hi, I only have one minute."
+  - during_first_long_explanation: "Sorry to interrupt, what do I actually need to do?"
+  - during_next_long_explanation: "Can you give me the short version?"
+  - if_answer_is_concise: "Okay, that makes sense."
+expected:
+  invariants:
+    - agent_recovers_after_interruption
+    - agent_does_not_repeat_full_script
+    - agent_adapts_to_requested_pace
+  acceptable_outcomes:
+    - concise_renewal_summary
+    - callback_offered
+stop_conditions:
+  - The agent gives and confirms a concise next step.
+  - Four minutes elapse.
+max_duration_seconds: 240
+tags: [interruption, latency, adaptation]
+

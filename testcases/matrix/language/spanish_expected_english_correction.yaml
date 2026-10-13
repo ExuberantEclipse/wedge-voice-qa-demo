@@ -1,0 +1,16 @@
+id: matrix_language_spanish_expected_english_correction_013
+version: 1
+title: Member directly corrects incorrect Spanish assumption
+priority: critical
+portal_language: es
+persona: {age_band: 40-70, language: en, demeanor: firm, audio_conditions: clean}
+caller_policy:
+  - say: "Please speak English with me."
+  - if_agent_asks_in_spanish: "English, please."
+  - after_switch: "That is better."
+expected:
+  invariants: [direct_language_correction_honored_immediately, no_additional_spanish_turn_after_correction, preference_confirmed]
+  acceptable_outcomes: [english_preference_recorded]
+stop_conditions: [The agent switches immediately and confirms English.]
+max_duration_seconds: 120
+tags: [matrix, language, correction]

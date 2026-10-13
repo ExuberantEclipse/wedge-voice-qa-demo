@@ -1,0 +1,28 @@
+id: language_spanish_switch_001
+version: 1
+title: Member switches from English to Spanish mid-sentence
+priority: high
+persona:
+  age_band: 55-75
+  language: mixed
+  demeanor: polite_and_uncertain
+  audio_conditions: clean
+caller_policy:
+  - say: "Hello?"
+  - after_opening: "I understand a little, pero prefiero hablar en español, por favor."
+  - after_language_switch: "¿Por qué me están llamando?"
+  - if_agent_returns_to_english: "En español, por favor."
+expected:
+  invariants:
+    - language_switch_acknowledged
+    - conversation_state_preserved_after_switch
+    - no_invented_translation
+  acceptable_outcomes:
+    - conversation_continues_in_spanish
+    - qualified_language_handoff
+stop_conditions:
+  - The agent continues coherently in Spanish.
+  - The agent arranges an appropriate language handoff.
+max_duration_seconds: 240
+tags: [spanish, language_switch, state]
+

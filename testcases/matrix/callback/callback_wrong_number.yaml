@@ -1,0 +1,15 @@
+id: matrix_callback_wrong_number_009
+version: 1
+title: Wrong-number recipient prohibits callback
+priority: critical
+portal_language: en
+persona: {age_band: 20-60, language: en, demeanor: annoyed, audio_conditions: clean}
+caller_policy:
+  - say: "You have the wrong number. James does not live here."
+  - if_callback_offered: "Do not call this number again."
+expected:
+  invariants: [wrong_number_disposition_recorded, no_callback_to_wrong_number, no_member_details_disclosed]
+  acceptable_outcomes: [wrong_number_removed]
+stop_conditions: [The agent apologizes, records wrong number, and ends.]
+max_duration_seconds: 120
+tags: [matrix, callback, wrong_number, privacy]

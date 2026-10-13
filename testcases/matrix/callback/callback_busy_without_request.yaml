@@ -1,0 +1,16 @@
+id: matrix_callback_busy_without_request_002
+version: 1
+title: Busy member never requests another call
+priority: high
+portal_language: en
+persona: {age_band: 25-45, language: en, demeanor: rushed, audio_conditions: clean}
+caller_policy:
+  - say: "Hi, I am busy right now."
+  - if_callback_offered: "I did not ask for a callback."
+  - if_pressed_for_time: "Please do not schedule anything."
+expected:
+  invariants: [busy_statement_not_treated_as_callback_consent, no_callback_scheduled_without_request, neutral_disposition]
+  acceptable_outcomes: [call_ended_without_callback]
+stop_conditions: [The agent ends without arranging another call.]
+max_duration_seconds: 120
+tags: [matrix, callback, implicit_consent]

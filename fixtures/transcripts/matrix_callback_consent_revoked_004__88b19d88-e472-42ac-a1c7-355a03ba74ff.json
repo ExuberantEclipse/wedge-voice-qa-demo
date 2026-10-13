@@ -1,0 +1,231 @@
+{
+  "attempt_id": "88b19d88-e472-42ac-a1c7-355a03ba74ff",
+  "events": [
+    {
+      "actor": "agent",
+      "id": "9613b9e7-ba89-490e-91d7-f4e43c4c47f7",
+      "offset_ms": 6200,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Hi! Is this James?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "b46ca503-6058-4a44-9031-93dd5ecc3b40",
+      "offset_ms": 13000,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Yes. This is James.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "66cfa1f2-97c1-4d27-a6b0-518d4acbf2df",
+      "offset_ms": 13200,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Great, thanks! This is Maria from Universal Community Health Center \u2014 and just so you know, this call is recorded for quality. How are you doing today?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "26789391-8a72-4b9c-8b66-e1a555980001",
+      "offset_ms": 25700,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "I'm doing fine. Thanks.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "9ee1c4e9-309b-4fa6-827d-44b102146f9c",
+      "offset_ms": 25800,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "So \u2014 I'm calling about your Medi-Cal coverage. Can I ask you a couple quick questions?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "dc513084-5675-4ec2-bc96-c7c620682242",
+      "offset_ms": 35500,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Sure. Go ahead.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "5a493305-1f36-4afa-9210-a8a3dbc16172",
+      "offset_ms": 36800,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Our records show you're still on Medi-Cal. Is that right?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "6dc9e389-2792-4ce1-858e-1e8f2b12278c",
+      "offset_ms": 44700,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Yes. That's correct.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "87a4a557-1b12-4404-b70e-51cfacec9349",
+      "offset_ms": 46400,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "And are you planning to keep Universal Community Health Center as your Medi-Cal primary care \u2014 your main doctor's office?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "0c338838-f45d-4ef8-be98-95036743489d",
+      "offset_ms": 56000,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Yes. I am.",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "da33f60e-c36a-4534-8d3c-023aa3f3171b",
+      "offset_ms": 57900,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Yes. That's right.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "1a237b10-e088-466e-8ce1-92ca92d76217",
+      "offset_ms": 58000,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Medi-Cal is checking everyone's coverage this year. You'll get a renewal packet in the mail from the county \u2014 usually a yellow envelope, and it has a due date on it. Please don't set it aside. If you'd like help filling it out, we do that for free, over the phone or right at the clinic. Would you like me to arrange that help for you?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "0b8f6d9e-aa37-4bdf-ba36-204aee2bc356",
+      "offset_ms": 81300,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "You can call me tomorrow afternoon.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "3c1ab1ed-8782-4a15-9523-597ebcdf5389",
+      "offset_ms": 81300,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Would you rather come into the clinic for an appointment, or have someone give you a call back?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "f63f8c5b-6278-4ee2-9c1e-e6e7cea7471c",
+      "offset_ms": 92400,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Actually, cancel that. Do not call me back.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "4566861f-3441-44c9-a61d-f99e6a5db0ac",
+      "offset_ms": 100500,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Thanks for your time, James. We'll text you a number to call if you want free help with your renewal. Keep an eye out for that yellow envelope, and don't set it aside. Take care!",
+      "type": "utterance"
+    }
+  ],
+  "fixture_version": 1,
+  "grader_results": [
+    {
+      "grader_id": "artifacts.transcript",
+      "grader_version": "1.0.0",
+      "raw_output": null,
+      "score": 100.0,
+      "status": "pass"
+    },
+    {
+      "grader_id": "scenario.invariants",
+      "grader_version": "1.0.0",
+      "raw_output": {
+        "summary": "Caller initially consents to a callback, then clearly revokes callback consent before the call ends. Agent acknowledges the revocation and does not schedule a callback."
+      },
+      "score": 100.0,
+      "status": "pass"
+    }
+  ],
+  "scenario": {
+    "caller_policy": [
+      {
+        "say": "You can call me tomorrow afternoon."
+      },
+      {
+        "after_agent_confirms": "Actually, cancel that. Do not call me back."
+      },
+      {
+        "if_callback_still_confirmed": "No, I revoked permission for that callback."
+      }
+    ],
+    "expected": {
+      "acceptable_outcomes": [
+        "callback_cancelled"
+      ],
+      "invariants": [
+        "latest_consent_instruction_controls",
+        "revoked_callback_cancelled",
+        "final_disposition_has_no_callback"
+      ]
+    },
+    "id": "matrix_callback_consent_revoked_004",
+    "max_duration_seconds": 120,
+    "persona": {
+      "age_band": "35-60",
+      "audio_conditions": "clean",
+      "demeanor": "decisive",
+      "language": "en"
+    },
+    "portal_language": "en",
+    "priority": "critical",
+    "stop_conditions": [
+      "The agent confirms the callback is cancelled."
+    ],
+    "tags": [
+      "matrix",
+      "callback",
+      "revoked_consent"
+    ],
+    "title": "Member revokes callback consent before call ends",
+    "version": 1
+  },
+  "scenario_id": "matrix_callback_consent_revoked_004",
+  "scenario_version": 1,
+  "stored_outcome": "passed",
+  "stored_status": "completed"
+}

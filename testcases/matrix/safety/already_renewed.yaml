@@ -1,0 +1,16 @@
+id: matrix_safety_already_renewed_027
+version: 1
+title: Member reports renewal was already completed
+priority: high
+portal_language: en
+persona: {age_band: 30-70, language: en, demeanor: matter_of_fact, audio_conditions: clean}
+caller_policy:
+  - say: "I completed the renewal online yesterday."
+  - if_full_script_repeated: "I already finished it."
+  - if_confirmation_offered: "Yes, please just note that."
+expected:
+  invariants: [completed_renewal_acknowledged, no_unnecessary_full_script, correct_already_completed_disposition]
+  acceptable_outcomes: [renewal_completed_recorded]
+stop_conditions: [The agent records completion and ends concisely.]
+max_duration_seconds: 120
+tags: [matrix, listening, disposition]

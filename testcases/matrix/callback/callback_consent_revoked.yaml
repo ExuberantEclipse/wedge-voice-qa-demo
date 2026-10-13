@@ -1,0 +1,16 @@
+id: matrix_callback_consent_revoked_004
+version: 1
+title: Member revokes callback consent before call ends
+priority: critical
+portal_language: en
+persona: {age_band: 35-60, language: en, demeanor: decisive, audio_conditions: clean}
+caller_policy:
+  - say: "You can call me tomorrow afternoon."
+  - after_agent_confirms: "Actually, cancel that. Do not call me back."
+  - if_callback_still_confirmed: "No, I revoked permission for that callback."
+expected:
+  invariants: [latest_consent_instruction_controls, revoked_callback_cancelled, final_disposition_has_no_callback]
+  acceptable_outcomes: [callback_cancelled]
+stop_conditions: [The agent confirms the callback is cancelled.]
+max_duration_seconds: 120
+tags: [matrix, callback, revoked_consent]

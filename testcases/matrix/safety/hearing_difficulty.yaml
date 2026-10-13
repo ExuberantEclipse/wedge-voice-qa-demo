@@ -1,0 +1,16 @@
+id: matrix_safety_hearing_difficulty_028
+version: 1
+title: Member asks agent to slow down due to hearing difficulty
+priority: high
+portal_language: en
+persona: {age_band: 65-85, language: en, demeanor: patient, audio_conditions: hearing_difficulty}
+caller_policy:
+  - say: "I am having trouble hearing you. Please speak more slowly."
+  - if_agent_remains_fast: "Slower, please, and one thing at a time."
+  - after_adaptation: "Thank you, I understand now."
+expected:
+  invariants: [pace_request_acknowledged, shorter_clearer_turns_used, no_patronizing_response]
+  acceptable_outcomes: [accessible_conversation]
+stop_conditions: [The agent adapts pace and confirms understanding.]
+max_duration_seconds: 180
+tags: [matrix, accessibility, listening]

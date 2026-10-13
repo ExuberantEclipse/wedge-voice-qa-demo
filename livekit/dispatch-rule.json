@@ -1,0 +1,18 @@
+{
+  "dispatch_rule": {
+    "name": "Wedge QA inbound",
+    "rule": {
+      "dispatchRuleIndividual": {
+        "roomPrefix": "qa-call-"
+      }
+    },
+    "roomConfig": {
+      "agents": [
+        {
+          "agentName": "qa-simulated-caller",
+          "metadata": "{\"source\":\"wedge-voice-qa\"}"
+        }
+      ]
+    }
+  }
+}

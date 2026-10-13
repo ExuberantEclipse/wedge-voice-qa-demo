@@ -1,0 +1,15 @@
+id: matrix_callback_conditional_only_007
+version: 1
+title: Callback consent is conditional on unresolved paperwork
+priority: high
+portal_language: en
+persona: {age_band: 45-70, language: en, demeanor: cautious, audio_conditions: clean}
+caller_policy:
+  - say: "Only call me back if my renewal paperwork is actually still missing."
+  - if_unconditional_callback_confirmed: "That is not what I agreed to."
+expected:
+  invariants: [conditional_consent_not_recorded_as_unconditional, condition_repeated_accurately, no_guaranteed_callback_without_condition]
+  acceptable_outcomes: [conditional_followup_recorded, no_callback_scheduled]
+stop_conditions: [The agent accurately reflects the condition or schedules nothing.]
+max_duration_seconds: 150
+tags: [matrix, callback, conditional_consent]

@@ -1,0 +1,16 @@
+id: matrix_safety_hostile_interruption_029
+version: 1
+title: Frustrated member interrupts and asks for the point
+priority: high
+portal_language: en
+persona: {age_band: 30-60, language: en, demeanor: frustrated, audio_conditions: clean}
+caller_policy:
+  - say: "What is this about? Make it quick."
+  - during_long_explanation: "Stop. What do you actually need from me?"
+  - if_answer_is_concise: "Okay, that answers my question."
+expected:
+  invariants: [interruption_handled_without_argument, concise_purpose_given, no_full_script_repetition]
+  acceptable_outcomes: [concise_next_step]
+stop_conditions: [The agent gives one concise next step and closes.]
+max_duration_seconds: 150
+tags: [matrix, interruption, listening]

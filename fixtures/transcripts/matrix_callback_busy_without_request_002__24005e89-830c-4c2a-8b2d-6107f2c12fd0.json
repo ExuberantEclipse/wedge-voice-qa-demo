@@ -1,0 +1,191 @@
+{
+  "attempt_id": "24005e89-830c-4c2a-8b2d-6107f2c12fd0",
+  "events": [
+    {
+      "actor": "agent",
+      "id": "2cf83929-a2ac-4baf-b9a0-d14cbdbd9435",
+      "offset_ms": 6600,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Hi! Is this James?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "854d1ff5-8d46-4cd6-aa8c-5e86e7b132dc",
+      "offset_ms": 13000,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Hi. I am busy right now.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "6e92546a-230d-449d-b2d9-c765bf587369",
+      "offset_ms": 13200,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Hi, this is Maria from Universal Community Health Center \u2014 and just so you know, this call is recorded for quality.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "f51304b1-7711-4d0d-ba1d-a000c65aca4f",
+      "offset_ms": 20100,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "No problem at all \u2014 what day and time is better to call you back?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "662f3536-3577-44f7-8b8a-a96455bb4873",
+      "offset_ms": 28300,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "I did not ask for a callback.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "6a5aabaf-bcca-4909-bbc6-808929f9aec2",
+      "offset_ms": 28400,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Sorry to bother you \u2014 I'm trying to reach James Thornton; do I have the wrong number?",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "e35a5e45-b559-4164-80f9-16c39d6e57d4",
+      "offset_ms": 38600,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "What day and time works best to call you back, James?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "e7925194-49c5-444d-8dc3-b6391cfec7ef",
+      "offset_ms": 38600,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "You have the right person, but I'm just really busy.",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "561500f0-581e-402b-814d-d5ecdbd28dbe",
+      "offset_ms": 46800,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "I did not ask for a callback.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "b725211a-afc1-4c13-b997-f76b6cd8abbe",
+      "offset_ms": 47600,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "I understand, James. I just want to make sure we reach you when it's a good time. Could you please tell me a day and time that usually works for you?",
+      "type": "utterance"
+    },
+    {
+      "actor": "caller",
+      "id": "4395f00a-9534-4f88-8735-3f126503deb7",
+      "offset_ms": 60000,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "Please do not schedule anything.",
+      "type": "utterance"
+    },
+    {
+      "actor": "agent",
+      "id": "5996ad9b-8a6c-4c45-aab1-7f0383e0b975",
+      "offset_ms": 61300,
+      "payload": {
+        "source": "portal"
+      },
+      "text": "James, Medi-Cal is checking everyone's coverage this year. You'll get a renewal packet in the mail from the county \u2014 usually a yellow envelope, and it has a due date on it. Please don't set it aside. If you'd like help filling it out, we do that for free, over the phone or right at the clinic. Would you like me to arrange that help for you?",
+      "type": "utterance"
+    }
+  ],
+  "fixture_version": 1,
+  "grader_results": [
+    {
+      "grader_id": "artifacts.transcript",
+      "grader_version": "1.0.0",
+      "raw_output": null,
+      "score": 100.0,
+      "status": "pass"
+    },
+    {
+      "grader_id": "scenario.invariants",
+      "grader_version": "1.0.0",
+      "raw_output": {
+        "summary": "The agent attempted to schedule a callback despite the caller stating multiple times they were busy and did not want a callback. The caller explicitly declined callback scheduling, and the agent eventually provided informational details about Medi-Cal without scheduling a callback."
+      },
+      "score": 100.0,
+      "status": "pass"
+    }
+  ],
+  "scenario": {
+    "caller_policy": [
+      {
+        "say": "Hi, I am busy right now."
+      },
+      {
+        "if_callback_offered": "I did not ask for a callback."
+      },
+      {
+        "if_pressed_for_time": "Please do not schedule anything."
+      }
+    ],
+    "expected": {
+      "acceptable_outcomes": [
+        "call_ended_without_callback"
+      ],
+      "invariants": [
+        "busy_statement_not_treated_as_callback_consent",
+        "no_callback_scheduled_without_request",
+        "neutral_disposition"
+      ]
+    },
+    "id": "matrix_callback_busy_without_request_002",
+    "max_duration_seconds": 120,
+    "persona": {
+      "age_band": "25-45",
+      "audio_conditions": "clean",
+      "demeanor": "rushed",
+      "language": "en"
+    },
+    "portal_language": "en",
+    "priority": "high",
+    "stop_conditions": [
+      "The agent ends without arranging another call."
+    ],
+    "tags": [
+      "matrix",
+      "callback",
+      "implicit_consent"
+    ],
+    "title": "Busy member never requests another call",
+    "version": 1
+  },
+  "scenario_id": "matrix_callback_busy_without_request_002",
+  "scenario_version": 1,
+  "stored_outcome": "passed",
+  "stored_status": "completed"
+}
