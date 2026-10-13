@@ -164,7 +164,11 @@ Useful manual test prompts after entering the demo code are:
 - Start in Spanish, then say, "Can we continue in English?"
 - Mumble a status, then correct the agent's interpretation.
 
-Vapi call transcripts and logs appear under **Logs → Calls** in the dashboard.
+For a presentation-friendly live transcript, open
+**http://127.0.0.1:5000/demo/transcript** while the local demo server is running. It
+updates automatically during the call and is deliberately blocked on the public
+tunnel. Vapi's post-call transcripts and logs remain available under **Logs → Calls**
+in the dashboard.
 
 ## Privacy boundary
 

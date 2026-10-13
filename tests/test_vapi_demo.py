@@ -92,6 +92,45 @@ class VapiDemoTests(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 401)
 
+    def test_local_demo_page_displays_live_transcript_and_is_not_public(self):
+        call_id = "call-live-view"
+        self.post(assistant_request(call_id, "+14255550123"))
+        for role, text, seconds in (
+            ("assistant", "Is this James?", 1.2),
+            ("user", "Yes.", 4.8),
+        ):
+            response = self.post(
+                {
+                    "message": {
+                        "type": "transcript",
+                        "call": {"id": call_id},
+                        "role": role,
+                        "transcriptType": "final",
+                        "transcript": text,
+                        "secondsFromStart": seconds,
+                    }
+                }
+            )
+            self.assertEqual(response.status_code, 200)
+
+        page = self.client.get("/demo/transcript")
+        self.assertEqual(page.status_code, 200)
+        self.assertIn("Live call transcript", page.get_data(as_text=True))
+
+        data = self.client.get("/demo/transcript.json").get_json()
+        self.assertEqual(data["status"], "in-progress")
+        self.assertEqual(
+            data["turns"],
+            [
+                {"role": "agent", "text": "Is this James?", "seconds": 1.2},
+                {"role": "caller", "text": "Yes.", "seconds": 4.8},
+            ],
+        )
+        external = self.client.get(
+            "/demo/transcript", headers={"Host": "public-tunnel.example"}
+        )
+        self.assertEqual(external.status_code, 404)
+
     def test_known_caller_gets_synthetic_first_name_without_keypad(self):
         response = self.post(assistant_request("call-1", "+14255550123"))
         self.assertEqual(response.status_code, 200)
@@ -452,6 +491,44 @@ class VapiDemoTests(unittest.TestCase):
                 self.assertIn(expected[1], result)
                 self.assertNotIn("Universal Community Health Center", result)
                 self.assertNotIn("yellow-envelope", result)
+
+    def test_verified_caller_cannot_reenter_identity_route_on_unclear_help(self):
+        call_id = "call-sticky-verification"
+        self.post(assistant_request(call_id, "+14255550123"))
+        self.post(
+            tool_request(
+                call_id, "tool-sticky-confirm", "confirm_synthetic_candidate", {}
+            )
+        )
+        for index, arguments in enumerate(
+            (
+                {"field": "medi_cal_status", "value": "active"},
+                {"field": "pcp_preference", "value": "keep_clinic"},
+                {"field": "packet_received", "value": "yes"},
+                {"field": "help_preference", "value": "uncertain"},
+            )
+        ):
+            self.post(
+                tool_request(
+                    call_id,
+                    f"tool-sticky-{index}",
+                    "record_workflow_fact",
+                    arguments,
+                )
+            )
+
+        response = self.post(
+            tool_request(
+                call_id,
+                "tool-wrong-identity-route",
+                "route_unverified_caller",
+                {"scenario": "unclear_identity", "caller_words": "An account"},
+            )
+        )
+        result = response.get_json()["results"][0]["result"]
+        self.assertIn("BLOCKED_VERIFIED_ROUTE", result)
+        self.assertIn('"step":"renewal_help_clarification"', result)
+        self.assertNotIn("Are you James", result)
 
     def test_do_not_call_is_honored_before_member_confirmation(self):
         self.post(assistant_request("call-unverified-dnc", "+14255550123"))

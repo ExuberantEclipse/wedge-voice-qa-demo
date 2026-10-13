@@ -123,7 +123,7 @@ known violations and verify that the detection layer catches them.
 
 The current repository test suite includes:
 
-- **107 automated tests** across identity, workflow, grading, persistence, and provider
+- **109 automated tests** across identity, workflow, grading, persistence, and provider
   adapters.
 - **360 workflow combinations** covering core renewal branch permutations.
 - **30/30 detected policy mutations** in the offline scenario report.
@@ -155,6 +155,10 @@ reproduction steps.
 The Vapi demo is the proposed improvement path after reviewing the failures above. It
 uses a fictional member record and guides the caller through a short Medi-Cal renewal
 review instead of relying on a long scripted monologue.
+
+During the demo, open **http://127.0.0.1:5000/demo/transcript** to show the live
+agent/caller transcript. This viewer is intentionally available only on the local
+machine; it is not exposed through the public webhook tunnel.
 
 ### Golden path
 

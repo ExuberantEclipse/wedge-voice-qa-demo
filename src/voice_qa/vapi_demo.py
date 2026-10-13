@@ -7,6 +7,8 @@ import getpass
 import hmac
 import json
 import os
+import threading
+import time
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 from urllib.error import HTTPError, URLError
@@ -23,6 +25,218 @@ from .renewal_workflow import RenewalWorkflowController, WorkflowError
 VAPI_API_BASE = "https://api.vapi.ai"
 
 
+class DemoTranscriptStore:
+    """Keep only the latest synthetic call transcript for the local demo screen."""
+
+    def __init__(self):
+        self._lock = threading.RLock()
+        self._call_id = ""
+        self._status = "waiting"
+        self._turns: list[dict[str, Any]] = []
+        self._partial: dict[str, Any] | None = None
+        self._updated_at = time.time()
+
+    def ingest(self, message: Mapping[str, Any]) -> None:
+        call_id = _call_id(message)
+        message_type = str(message.get("type") or "")
+        with self._lock:
+            if message_type == "assistant-request" and call_id:
+                self._call_id = call_id
+                self._status = "in-progress"
+                self._turns = []
+                self._partial = None
+
+            if call_id and self._call_id and call_id != self._call_id:
+                return
+            if call_id and not self._call_id:
+                self._call_id = call_id
+
+            if message_type == "transcript":
+                role = _display_role(str(message.get("role") or ""))
+                text = str(message.get("transcript") or "").strip()
+                if role and text:
+                    turn = {
+                        "role": role,
+                        "text": text,
+                        "seconds": _safe_seconds(message.get("secondsFromStart")),
+                    }
+                    if str(message.get("transcriptType") or "").casefold() == "partial":
+                        self._partial = turn
+                    else:
+                        self._append(turn)
+                        self._partial = None
+
+            if message_type == "conversation-update":
+                turns = _display_turns(message.get("conversation"))
+                if turns:
+                    self._turns = turns
+                    self._partial = None
+
+            if message_type == "end-of-call-report":
+                artifact = message.get("artifact")
+                if isinstance(artifact, Mapping):
+                    turns = _display_turns(artifact.get("messages"))
+                    if turns:
+                        self._turns = turns
+                        self._partial = None
+                self._status = "ended"
+
+            if message_type == "status-update":
+                status = str(message.get("status") or "")
+                if status:
+                    self._status = status
+
+            self._updated_at = time.time()
+
+    def snapshot(self) -> Mapping[str, Any]:
+        with self._lock:
+            return {
+                "call_id": self._call_id,
+                "status": self._status,
+                "turns": [dict(item) for item in self._turns],
+                "partial": dict(self._partial) if self._partial else None,
+                "updated_at": self._updated_at,
+            }
+
+    def _append(self, turn: Mapping[str, Any]) -> None:
+        if self._turns and all(
+            self._turns[-1].get(key) == turn.get(key) for key in ("role", "text")
+        ):
+            return
+        self._turns.append(dict(turn))
+
+
+def _display_role(value: str) -> str:
+    return {
+        "user": "caller",
+        "caller": "caller",
+        "assistant": "agent",
+        "bot": "agent",
+    }.get(value.casefold(), "")
+
+
+def _safe_seconds(value: Any) -> float:
+    try:
+        return max(0.0, round(float(value or 0), 1))
+    except (TypeError, ValueError):
+        return 0.0
+
+
+def _display_turns(value: Any) -> list[dict[str, Any]]:
+    if not isinstance(value, list):
+        return []
+    turns: list[dict[str, Any]] = []
+    for item in value:
+        if not isinstance(item, Mapping):
+            continue
+        role = _display_role(str(item.get("role") or ""))
+        text = str(
+            item.get("message") or item.get("content") or item.get("transcript") or ""
+        ).strip()
+        if not role or not text:
+            continue
+        turn = {
+            "role": role,
+            "text": text,
+            "seconds": _safe_seconds(item.get("secondsFromStart")),
+        }
+        if not turns or any(
+            turns[-1].get(key) != turn.get(key) for key in ("role", "text")
+        ):
+            turns.append(turn)
+    return turns
+
+
+_TRANSCRIPT_PAGE = """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wedge Voice Demo · Live Transcript</title>
+  <style>
+    :root { color-scheme: dark; --ink:#f6f7fb; --muted:#9ca9bd; --panel:#111827;
+      --line:#26334a; --agent:#152c46; --caller:#143a31; --accent:#68d6b5; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:#080d17; color:var(--ink); font:16px/1.5 Inter,system-ui,sans-serif; }
+    header { position:sticky; top:0; z-index:2; display:flex; justify-content:space-between;
+      gap:24px; align-items:center; padding:22px clamp(20px,5vw,64px); background:#0b1220ee;
+      border-bottom:1px solid var(--line); backdrop-filter:blur(12px); }
+    h1 { margin:0; font-size:clamp(20px,3vw,30px); letter-spacing:-.02em; }
+    .eyebrow { color:var(--accent); font-size:12px; font-weight:800; letter-spacing:.14em;
+      text-transform:uppercase; }
+    .status { display:flex; align-items:center; gap:9px; color:var(--muted); white-space:nowrap; }
+    .dot { width:10px; height:10px; border-radius:50%; background:#64748b; }
+    .dot.live { background:var(--accent); box-shadow:0 0 16px var(--accent); }
+    main { width:min(940px,calc(100% - 32px)); margin:34px auto 80px; }
+    .privacy { margin-bottom:20px; padding:12px 16px; color:var(--muted); background:#0e1727;
+      border:1px solid var(--line); border-radius:12px; font-size:14px; }
+    #empty { padding:72px 24px; text-align:center; color:var(--muted); border:1px dashed var(--line);
+      border-radius:18px; }
+    #turns { display:grid; gap:14px; }
+    .turn { max-width:82%; padding:16px 18px; border:1px solid var(--line); border-radius:18px; }
+    .turn.agent { justify-self:start; background:var(--agent); border-bottom-left-radius:5px; }
+    .turn.caller { justify-self:end; background:var(--caller); border-bottom-right-radius:5px; }
+    .turn.partial { opacity:.55; }
+    .meta { display:flex; justify-content:space-between; gap:20px; margin-bottom:7px;
+      color:var(--muted); font-size:12px; font-weight:750; letter-spacing:.08em; text-transform:uppercase; }
+    .text { white-space:pre-wrap; overflow-wrap:anywhere; }
+    @media (max-width:640px) { header { align-items:flex-start; flex-direction:column; }
+      .turn { max-width:94%; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div><div class="eyebrow">Wedge voice demo</div><h1>Live call transcript</h1></div>
+    <div class="status"><span id="dot" class="dot"></span><span id="status">Waiting for a call</span></div>
+  </header>
+  <main>
+    <div class="privacy">Local-only view · synthetic demo calls only · tool payloads and private profile data are hidden.</div>
+    <div id="empty">Call the demo number to begin. Transcript turns will appear here automatically.</div>
+    <div id="turns" aria-live="polite"></div>
+  </main>
+  <script>
+    const turns = document.querySelector('#turns');
+    const empty = document.querySelector('#empty');
+    const status = document.querySelector('#status');
+    const dot = document.querySelector('#dot');
+    let signature = '';
+    const clock = seconds => {
+      const value = Math.max(0, Math.round(Number(seconds) || 0));
+      return `${String(Math.floor(value / 60)).padStart(2,'0')}:${String(value % 60).padStart(2,'0')}`;
+    };
+    const card = (turn, partial=false) => {
+      const node = document.createElement('article');
+      node.className = `turn ${turn.role}${partial ? ' partial' : ''}`;
+      const meta = document.createElement('div'); meta.className = 'meta';
+      const who = document.createElement('span'); who.textContent = turn.role === 'agent' ? 'Agent' : 'Caller';
+      const when = document.createElement('span'); when.textContent = clock(turn.seconds);
+      const text = document.createElement('div'); text.className = 'text'; text.textContent = turn.text;
+      meta.append(who, when); node.append(meta, text); return node;
+    };
+    async function refresh() {
+      try {
+        const response = await fetch('/demo/transcript.json', {cache:'no-store'});
+        if (!response.ok) throw new Error('unavailable');
+        const data = await response.json();
+        const next = JSON.stringify([data.status, data.turns, data.partial]);
+        status.textContent = data.status === 'in-progress' ? 'Call in progress' :
+          data.status === 'ended' ? 'Call ended' : 'Waiting for a call';
+        dot.classList.toggle('live', data.status === 'in-progress');
+        if (next !== signature) {
+          signature = next; turns.replaceChildren();
+          data.turns.forEach(turn => turns.append(card(turn)));
+          if (data.partial) turns.append(card(data.partial, true));
+          empty.hidden = data.turns.length > 0 || Boolean(data.partial);
+          window.scrollTo({top:document.body.scrollHeight, behavior:'smooth'});
+        }
+      } catch (_) { status.textContent = 'Transcript unavailable'; dot.classList.remove('live'); }
+    }
+    refresh(); setInterval(refresh, 750);
+  </script>
+</body>
+</html>"""
+
+
 def create_app(
     *,
     controller: IdentityController,
@@ -33,6 +247,8 @@ def create_app(
         raise IdentityError("VAPI_WEBHOOK_SECRET must contain at least 24 characters")
     app = Flask(__name__)
     renewal = workflow or RenewalWorkflowController()
+    transcript = DemoTranscriptStore()
+    app.extensions["demo_transcript"] = transcript
 
     def authorized() -> bool:
         expected = f"Bearer {webhook_secret}"
@@ -46,6 +262,24 @@ def create_app(
     def healthz() -> Any:
         return jsonify({"status": "ok", "demo": "vapi-caller-identification"})
 
+    def local_demo_only() -> bool:
+        hostname = request.host.partition(":")[0].casefold()
+        return hostname in {"127.0.0.1", "localhost"}
+
+    @app.get("/demo/transcript")
+    def transcript_page() -> Response:
+        if not local_demo_only():
+            return Response(status=404)
+        return Response(_TRANSCRIPT_PAGE, content_type="text/html; charset=utf-8")
+
+    @app.get("/demo/transcript.json")
+    def transcript_data() -> Response:
+        if not local_demo_only():
+            return Response(status=404)
+        response = jsonify(transcript.snapshot())
+        response.headers["Cache-Control"] = "no-store"
+        return response
+
     @app.post("/vapi/webhook")
     def webhook() -> Response:
         if not authorized():
@@ -54,6 +288,7 @@ def create_app(
         message = body.get("message") if isinstance(body, Mapping) else None
         if not isinstance(message, Mapping):
             return jsonify({"error": "invalid message"}), 400
+        transcript.ingest(message)
         message_type = str(message.get("type") or "")
 
         if message_type == "assistant-request":
@@ -145,6 +380,8 @@ Verification workflow:
 - When the caller confirms the synthetic candidate, call confirm_synthetic_candidate
   exactly once. VERIFIED_STATE_ACTIVE is sticky for the rest of the call. Once received,
   never ask for identity again or claim another verification step is needed.
+- After VERIFIED_STATE_ACTIVE, route_unverified_caller is forbidden. Ambiguous speech
+  must be clarified within the current renewal step, never as an identity question.
 - Only after VERIFIED_STATE_ACTIVE, greet the member and use the returned synthetic
   renewal context.
 - If a verified caller asks what information is available, immediately call
@@ -715,6 +952,16 @@ def _run_tool(
     if name == "route_unverified_caller":
         scenario = str(arguments.get("scenario") or "")
         identity_session = controller.session(call_id)
+        if identity_session.state == "verified_member":
+            next_step = workflow.next_step(call_id)
+            return (
+                "BLOCKED_VERIFIED_ROUTE: identity is already confirmed and sticky for "
+                "this call. Never ask whether the caller is the member again and never "
+                "call route_unverified_caller again. The unclear speech belongs to the "
+                "current workflow step. Ask one short clarification grounded only in "
+                "these choices, then wait: "
+                + json.dumps(dict(next_step), separators=(",", ":"))
+            )
         candidate_label = "the member"
         if identity_session.selected_member_id:
             candidate_label = controller.directory.member(
